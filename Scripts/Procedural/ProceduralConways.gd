@@ -4,8 +4,11 @@ export (int, 100) var cellSpawnChance = 50
 export (int, 1,8) var birthLimit = 4
 export (int, 1,8) var deathLimit = 4
 export (int, 1,10) var repeatCount = 3
-export var realTime = false
+
+export var invert = false;
+
 var sorroundCells = Array()
+
 
 func _ready():
 
@@ -20,21 +23,20 @@ func _ready():
 	self.sorroundCells.append(Vector2(1,0))
 	self.sorroundCells.append(Vector2(1,1))
 
-	self.Create()
-	self.Clean()
+	
+	self.Create(0)
+	self.Clean(0)
 	self.Build()
 	
 	pass
 
 func Build():
+	self.done = false
 	self.RandomFill(0,1,self.cellSpawnChance)
 	self.GenerateMap()
-	self.PreviewAsTexture()	
-
-func _process(delta):
-	if realTime:
-		Build()
-
+	if self.invert: self.InvertMap()
+	self.done = true
+	
 func GenerateMap():
 	for i in range(self.repeatCount):
 		self.data = self.SetMapCells(self.data)
@@ -72,23 +74,5 @@ func SetMapCells(oldMap):
 					newMap[x][y] = 1 
 				else: 
 					newMap[x][y] = 0
-
-
 	return newMap	
-
-func PreviewAsTexture():
-	var imageTexture = ImageTexture.new()
-	var img = Image.new()    
-	img.create(self.width,self.height,false,Image.FORMAT_RGB8)
-	img.fill(Color(1,1,1,1))
-	img.lock()
-	
-	for x in range(self.width):
-		for y in range(self.height):
-			if (self.data[x][y]==1): img.set_pixel(x,y,Color(0,0,0,1))
-	img.unlock()
-	imageTexture.create_from_image(img)
-	$Preview.texture = imageTexture
-	imageTexture.resource_name = "The created texture!"	
-	
 

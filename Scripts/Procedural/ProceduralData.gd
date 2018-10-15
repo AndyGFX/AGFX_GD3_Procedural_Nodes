@@ -1,23 +1,24 @@
 extends Node2D
 
+
 export var width = 64
 export var height = 64
 export var randomSeed = true
 export var _seed_ = 123456
 var data = []
+var done = false;
 
 
-
-func Create():
+func Create(type_of):
 	for x in range(self.width):
 		self.data.append([])
 		for y in range(self.height):
-			self.data[x].append(0)
+			self.data[x].append(type_of)
 
-func Clean():
+func Clean(type_of):
 	for x in range(self.width):		
 		for y in range(self.height):
-			self.data[x][y] = 0
+			self.data[x][y] = type_of
 
 func RandomFill(empty,fill,chance):
 	if (self.randomSeed):
@@ -33,3 +34,11 @@ func RandomFill(empty,fill,chance):
 			else:
 				self.data[x][y] = fill
 	pass
+
+func InvertMap():
+	for x in range(self.width):		
+		for y in range(self.height):
+			if self.data[x][y] == 0:
+				self.data[x][y] = 1
+			elif self.data[x][y] == 1:
+				self.data[x][y] = 0

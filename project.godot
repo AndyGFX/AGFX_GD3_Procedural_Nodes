@@ -14,6 +14,10 @@ config/name="GD3_Procedural_Nodes"
 run/main_scene="res://MAIN.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Utils="*res://Scripts/Utils.gd"
+
 [display]
 
 window/size/width=320

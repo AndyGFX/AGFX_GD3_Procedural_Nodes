@@ -1,19 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Scripts/Procedural/ProceduralConways.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Preview.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Procedural/ProceduralConways.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Procedural/ProceduralMaze.gd" type="Script" id=3]
 
-[node name="Node2D" type="Node2D" index="0"]
-
-script = ExtResource( 1 )
-width = 64
-height = 64
-randomSeed = false
-_seed_ = 128
-cellSpawnChance = 56
-birthLimit = 4
-deathLimit = 3
-repeatCount = 3
-realTime = false
+[node name="Scene" type="Node2D" index="0"]
 
 [node name="Preview" type="TextureRect" parent="." index="0"]
 
@@ -21,10 +12,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 28.0
-margin_top = 29.0
-margin_right = 202.0
-margin_bottom = 171.0
+margin_left = 2.0
+margin_right = 176.0
+margin_bottom = 142.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -32,5 +22,32 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 stretch_mode = 0
+script = ExtResource( 1 )
+nodeName = "Maze"
+
+[node name="Conways" type="Node2D" parent="." index="1"]
+
+position = Vector2( 32, 32 )
+script = ExtResource( 2 )
+width = 64
+height = 64
+randomSeed = false
+_seed_ = 123456
+cellSpawnChance = 50
+birthLimit = 4
+deathLimit = 4
+repeatCount = 4
+invert = true
+
+[node name="Maze" type="Node2D" parent="." index="2"]
+
+script = ExtResource( 3 )
+width = 10
+height = 10
+randomSeed = false
+_seed_ = 123456
+invert = false
+removeWalls = false
+start = Vector2( 1, 1 )
 
 
