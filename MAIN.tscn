@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/Preview.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Procedural/ProceduralConways.gd" type="Script" id=2]
-[ext_resource path="res://Scripts/Procedural/ProceduralMaze.gd" type="Script" id=3]
 
 [node name="Scene" type="Node2D" index="0"]
 
@@ -23,7 +22,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 stretch_mode = 0
 script = ExtResource( 1 )
-nodeName = "Maze"
+nodeName = "Conways"
 
 [node name="Conways" type="Node2D" parent="." index="1"]
 
@@ -38,16 +37,5 @@ birthLimit = 4
 deathLimit = 4
 repeatCount = 4
 invert = true
-
-[node name="Maze" type="Node2D" parent="." index="2"]
-
-script = ExtResource( 3 )
-width = 10
-height = 10
-randomSeed = false
-_seed_ = 123456
-invert = false
-removeWalls = false
-start = Vector2( 1, 1 )
 
 

@@ -1,7 +1,7 @@
 extends TextureRect
 
 
-export (String,"Conways","Maze" ) var nodeName = "undefined"
+export (String,"Conways","Noise" ) var nodeName = "undefined"
 
 var proceduralData
 
@@ -23,14 +23,11 @@ func PreviewAsOverlay():
 	print("Redraw")
 	for x in range(self.proceduralData.width):
 		for y in range(self.proceduralData.height):
-			if (self.proceduralData.data[x][y].down==0):
+			if (self.proceduralData.data[x][y]==0):
 				draw_circle(Vector2(8+x*2,8+y*2),1.0,Color(0,0,0,1))
-			if (self.proceduralData.data[x][y].down==1):
+			if (self.proceduralData.data[x][y]==1):
 				draw_circle(Vector2(8+x*2,8+y*2),1.0,Color(1,1,1,1))
-			if (self.proceduralData.data[x][y].right==0):
-				draw_circle(Vector2(8+x*2,8+y*2),1.0,Color(0,0,0,1))
-			if (self.proceduralData.data[x][y].right==1):
-				draw_circle(Vector2(8+x*2,8+y*2),1.0,Color(1,1,1,1))
+			
 	pass
 	
 	
