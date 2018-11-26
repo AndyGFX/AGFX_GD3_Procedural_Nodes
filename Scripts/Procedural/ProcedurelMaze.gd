@@ -35,17 +35,17 @@ func GenerateMap():
 				# nothing
 				pass
 			elif (y==self.height):
-				self.data[x][y].right = WALL
-				self.data[x][y+1].right = WALL
+				self.data[x][y].down = WALL
+				self.data[x][y+1].up = WALL
 			elif (x==self.width):
 				self.data[x][y].right = WALL
-				self.data[x+1][y].right = WALL
+				self.data[x+1][y].left = WALL
 			elif (floor(rand_range(0,2))==0):
-				self.data[x][y].right = WALL
-				self.data[x][y+1].left = WALL
-			else:
 				self.data[x][y].down = WALL
-				self.data[x+1][y].up = WALL
+				self.data[x][y+1].up = WALL
+			else:
+				self.data[x][y].right = WALL
+				self.data[x+1][y].left = WALL
 
 func InvertMazeMap():
 	for x in range(self.width):		
