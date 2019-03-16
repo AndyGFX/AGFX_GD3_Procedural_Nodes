@@ -13,12 +13,12 @@ func Create(type_of):
 	for x in range(self.width):
 		self.data.append([])
 		for y in range(self.height):
-			self.data[x].append(type_of)
+			self.data[x].append(type_of.new())
 
 func Clean(type_of):
 	for x in range(self.width):		
 		for y in range(self.height):
-			self.data[x][y] = type_of
+			self.data[x][y] = type_of.new()
 
 func RandomFill(empty,fill,chance):
 	if (self.randomSeed):
