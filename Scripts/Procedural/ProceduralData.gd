@@ -28,7 +28,7 @@ func RandomFill(empty,fill,chance):
 	seed(self._seed_)	
 
 	for x in range(self.width):		
-		for y in range(self.height):						
+		for y in range(self.height):
 			if (randi()%100)<chance:
 				self.data[x][y] = empty
 			else:

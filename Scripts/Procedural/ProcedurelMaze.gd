@@ -14,8 +14,21 @@ var empty_cell = {
 	}
 
 func _ready():
-	self.Create(empty_cell)
-	self.Clean(empty_cell)
+	self.Create({
+	"left":0,
+	"right":0,
+	"up":0,
+	"down":0,
+	"visited":0
+	})
+	self.Clean({
+	"left":0,
+	"right":0,
+	"up":0,
+	"down":0,
+	"visited":0
+	})
+	self.data[0][0].left=1
 	self.Build()
 	pass
 	
@@ -29,23 +42,43 @@ func Build():
 	
 func GenerateMap():
 	
-	for x in range(self.width-1):
-		for y in range(self.height-1):
-			if (y==self.height) and (x==self.width):
-				# nothing
+#	for x in range(self.width-1):
+#		for y in range(self.height-1):
+#			if (y==self.height) and (x==self.width):
+#				# nothing
+#				pass
+#			elif (y==self.height):
+#				self.data[x][y].down = WALL
+#				self.data[x][y+1].up = WALL
+#			elif (x==self.width):
+#				self.data[x][y].right = WALL
+#				self.data[x+1][y].left = WALL
+#			elif (floor(rand_range(0,2))==0):
+#				self.data[x][y].down = WALL
+#				self.data[x][y+1].up = WALL
+#			else:
+#				self.data[x][y].right = WALL
+#				self.data[x+1][y].left = WALL
+
+	for y in range(1,self.width):  	#i
+		for x in range(1,self.height): 	#j
+			if ((y==self.height) and (x==self.width)):
 				pass
 			elif (y==self.height):
-				self.data[x][y].down = WALL
-				self.data[x][y+1].up = WALL
+				self.data[y-1][x-1].right = 1
+				self.data[y-1][x].left = 1
 			elif (x==self.width):
-				self.data[x][y].right = WALL
-				self.data[x+1][y].left = WALL
+				self.data[y-1][x-1].down = 1
+				self.data[y][x-1].up = 1
 			elif (floor(rand_range(0,2))==0):
-				self.data[x][y].down = WALL
-				self.data[x][y+1].up = WALL
+				self.data[y-1][x-1].right = 1
+				self.data[y-1][x].left = 1
 			else:
-				self.data[x][y].right = WALL
-				self.data[x+1][y].left = WALL
+				self.data[y-1][x-1].down = 1
+				self.data[y][x-1].up = 1
+				
+
+
 
 func InvertMazeMap():
 	for x in range(self.width):		

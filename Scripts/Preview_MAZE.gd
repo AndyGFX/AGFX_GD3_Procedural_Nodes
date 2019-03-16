@@ -30,10 +30,10 @@ func PreviewAsOverlay():
 	# draw walls
 #	for x in range(self.proceduralData.width):
 #		for y in range(self.proceduralData.height):
-#	for x in range(1):
-#		for y in range(1):	
-			var x = 1
-			var y = 1
+	for x in range(4):
+		for y in range(5):	
+			#var x = 1
+			#var y = 1
 			var cx = x*2+1
 			var cy = y*2+1
 			if (self.proceduralData.data[x][y].left == 1): draw_circle(Vector2(8+4*cx-8,8+4*cy),4.0,Color(1,1,1,1))
