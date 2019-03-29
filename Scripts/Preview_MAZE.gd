@@ -7,17 +7,13 @@ var paint:Image
 
 func _ready():
 
-	self.proceduralData = ProceduralMaze.new();
+	self.proceduralData = ProceduralMaze.new(15,10);
 	
-	#if self.proceduralData==null: print("ERROR: missing ProcedralData class in scene")
 	
-	self.paint = Image.new()
-	
+	self.paint = Image.new()	
 	self.paint.create(self.proceduralData.width*4,self.proceduralData.height*4,false,Image.FORMAT_RGBA8)
 	
-	self.proceduralData.invert = false
-	self.proceduralData.width = 5*3-5
-	self.proceduralData.height = 5*3-5
+	self.proceduralData.invert = false	
 	self.proceduralData.Build()
 	
 	pass

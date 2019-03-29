@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/Preview_MAZE.gd" type="Script" id=1]
-[ext_resource path="res://TmpSprite.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/TmpSprite.png" type="Texture" id=2]
 
 [node name="TestMaze" type="Node2D"]
 script = ExtResource( 1 )

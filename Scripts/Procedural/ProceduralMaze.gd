@@ -14,14 +14,16 @@ class empty_cell:
 	var down:bool = 0
 	var visited:bool = 0
 
-func _init():
+func _init(w:int,h:int):
+	
+	self.width = w
+	self.height = h	
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 	pass
 	
 
-func Build():
-	print("Build")
+func Build():	
 	self.done = false
 	self.GenerateMap()
 	if self.invert: self.InvertMazeMap()
@@ -29,8 +31,8 @@ func Build():
 	
 func GenerateMap():
 	
-	for x in range(0,self.width):
-		for y in range(0,self.height):
+	for x in range(0,self.width-1):
+		for y in range(0,self.height-1):
 			if (y==self.height) and (x==self.width):
 				# nothing
 				pass

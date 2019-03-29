@@ -1,5 +1,7 @@
 extends "ProceduralData.gd"
 
+class_name ProceduralConways
+
 export (int, 100) var cellSpawnChance = 50
 export (int, 1,8) var birthLimit = 4
 export (int, 1,8) var deathLimit = 4
@@ -13,8 +15,10 @@ class empty_cell:
 	var empty = 0
 	
 	
-func _ready():
-
+func _init(w:int,h:int):
+	
+	self.width = w
+	self.height = h
 	self.sorroundCells.append(Vector2(-1,-1))
 	self.sorroundCells.append(Vector2(-1,0))
 	self.sorroundCells.append(Vector2(-1,1))
