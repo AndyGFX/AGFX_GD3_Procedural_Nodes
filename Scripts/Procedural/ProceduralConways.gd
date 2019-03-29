@@ -9,7 +9,10 @@ export var invert = false;
 
 var sorroundCells = Array()
 
-
+class empty_cell:
+	var empty = 0
+	
+	
 func _ready():
 
 	self.sorroundCells.append(Vector2(-1,-1))
@@ -24,8 +27,8 @@ func _ready():
 	self.sorroundCells.append(Vector2(1,1))
 
 	
-	self.Create(0)
-	self.Clean(0)
+	self.Create(empty_cell)
+	self.Clean(empty_cell)
 	self.Build()
 	
 	pass

@@ -16,4 +16,5 @@ position = Vector2( 32, 32 )
 script = ExtResource( 2 )
 width = 15
 height = 10
+invert = true
 
