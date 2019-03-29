@@ -1,8 +1,8 @@
 extends Node2D
 
 
-export var width = 64
-export var height = 64
+export var width = 32
+export var height = 32
 export var randomSeed = true
 export var _seed_ = 123456
 var data = []
