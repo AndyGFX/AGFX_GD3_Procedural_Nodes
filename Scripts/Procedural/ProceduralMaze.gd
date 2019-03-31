@@ -33,6 +33,7 @@ func GenerateMap():
 	
 	for x in range(0,self.width-1):
 		for y in range(0,self.height-1):
+
 			if (y==self.height) and (x==self.width):
 				# nothing
 				pass
@@ -42,7 +43,7 @@ func GenerateMap():
 			elif (x==self.width):
 				self.data[x][y].right = WALL
 				self.data[x+1][y].left = WALL
-			elif (floor(rand_range(0,3))==0):
+			elif (floor(rand_range(0,2))==0):
 				self.data[x][y].down = WALL
 				self.data[x][y+1].up = WALL
 			else:

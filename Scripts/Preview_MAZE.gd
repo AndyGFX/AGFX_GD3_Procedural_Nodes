@@ -7,11 +7,11 @@ var paint:Image
 
 func _ready():
 
-	self.proceduralData = ProceduralMaze.new(15,10);
+	self.proceduralData = ProceduralMaze.new(56,56);
 	
 	
 	self.paint = Image.new()	
-	self.paint.create(self.proceduralData.width*4,self.proceduralData.height*4,false,Image.FORMAT_RGBA8)
+	self.paint.create(self.proceduralData.width*2+1,self.proceduralData.height*2+1,false,Image.FORMAT_RGBA8)
 	
 	self.proceduralData.invert = false	
 	self.proceduralData.Build()
@@ -40,10 +40,10 @@ func PreviewAsOverlay():
 
 	for x in range(0,self.proceduralData.width):
 		for y in range(0,self.proceduralData.height):
-			if (self.proceduralData.data[x][y].left): _DrawDoor(x,y,0,1)
-			if (self.proceduralData.data[x][y].right): _DrawDoor(x,y,2,1)
-			if (self.proceduralData.data[x][y].up): _DrawDoor(x,y,1,0)
-			if (self.proceduralData.data[x][y].down): _DrawDoor(x,y,1,2)
+			#if (self.proceduralData.data[x][y].left): _DrawDoor(x,y,0,1)
+			if (!self.proceduralData.data[x][y].right): _DrawDoor(x,y,2,1)
+			#if (self.proceduralData.data[x][y].up): _DrawDoor(x,y,1,0)
+			if (!self.proceduralData.data[x][y].down): _DrawDoor(x,y,1,2)
 	
 	pass
 
