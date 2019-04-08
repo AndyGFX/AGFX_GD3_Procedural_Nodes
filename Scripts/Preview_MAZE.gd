@@ -40,10 +40,10 @@ func PreviewAsOverlay():
 
 	for x in range(0,self.proceduralData.width):
 		for y in range(0,self.proceduralData.height):
-			#if (self.proceduralData.data[x][y].left): _DrawDoor(x,y,0,1)
-			if (!self.proceduralData.data[x][y].right): _DrawDoor(x,y,2,1)
-			#if (self.proceduralData.data[x][y].up): _DrawDoor(x,y,1,0)
-			if (!self.proceduralData.data[x][y].down): _DrawDoor(x,y,1,2)
+			if (self.proceduralData.data[x][y].left): _DrawDoor(x,y,0,1)
+			#if (!self.proceduralData.data[x][y].right): _DrawDoor(x,y,2,1)
+			if (self.proceduralData.data[x][y].up): _DrawDoor(x,y,1,0)
+			#if (!self.proceduralData.data[x][y].down): _DrawDoor(x,y,1,2)
 	
 	pass
 
