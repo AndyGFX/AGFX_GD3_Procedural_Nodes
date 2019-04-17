@@ -18,16 +18,22 @@ _global_script_classes=[ {
 "class": "ProceduralMaze",
 "language": "GDScript",
 "path": "res://Scripts/Procedural/ProceduralMaze.gd"
+}, {
+"base": "",
+"class": "ProceduralMaze2",
+"language": "GDScript",
+"path": "res://Scripts/Procedural/ProceduralMaze2.gd"
 } ]
 _global_script_class_icons={
 "ProceduralConways": "",
-"ProceduralMaze": ""
+"ProceduralMaze": "",
+"ProceduralMaze2": ""
 }
 
 [application]
 
 config/name="GD3_Procedural_Nodes"
-run/main_scene="res://Test_MAZE.tscn"
+run/main_scene="res://TestMAZE2.tscn"
 config/icon="res://icon.png"
 
 [autoload]
