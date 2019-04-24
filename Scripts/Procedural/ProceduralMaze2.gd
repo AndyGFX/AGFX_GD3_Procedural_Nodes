@@ -30,6 +30,11 @@ func Build():
 	
 func GenerateMap():
 	
+	g_intDepth = 0; 
+ 
+	self.DigMaze(self.data, 1, 1); 
+	self.data[1][1] = 2; 
+	self.data[self.width-1][self.height-2] = 1; 
 	pass
 
 func InvertMazeMap():
@@ -86,9 +91,9 @@ func ValidMove(Maze, x:int, y:int):
 func ValidCount(Maze, x:int, y:int):
 	var intResult:int = 0
  
-	intResult += self.ValidMove(Maze, x,y-2); 
-	intResult += self.ValidMove(Maze, x+2,y); 
-	intResult += self.ValidMove(Maze, x,y+2); 
-	intResult += self.ValidMove(Maze, x-2,y); 
+	intResult = intResult + self.ValidMove(Maze, x,y-2); 
+	intResult = intResult + self.ValidMove(Maze, x+2,y); 
+	intResult = intResult + self.ValidMove(Maze, x,y+2); 
+	intResult = intResult + self.ValidMove(Maze, x-2,y); 
  
 	return intResult; 
