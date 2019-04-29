@@ -31,6 +31,13 @@ func Build():
 func GenerateMap():
 	
 	g_intDepth = 0; 
+	
+	if (self.randomSeed):
+		randomize()
+		self._seed_ = randi()
+	
+	seed(self._seed_)	
+
 	self.DigMaze(self.data, 1, 1); 
 	pass
 
@@ -46,7 +53,7 @@ func DigMaze(Maze, x:int, y:int):
 	
 	var newx:int = 0; 
 	var newy:int = 0; 
- 
+	
 	g_intDepth = g_intDepth + 1; 
  
 	Maze[x][y].value = 1

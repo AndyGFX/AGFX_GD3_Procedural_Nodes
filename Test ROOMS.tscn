@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/Preview_ROOMS.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/TmpSprite.png" type="Texture" id=2]
+
+[node name="Test ROOMS" type="Node2D"]
+script = ExtResource( 1 )
+room_count = Vector2( 11, 11 )
+
+[node name="Preview_MAZE" type="Sprite" parent="."]
+position = Vector2( 12.6316, 15.7895 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Preview_ROOMS" type="Sprite" parent="."]
+position = Vector2( 275.789, 16.8421 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+centered = false
+
