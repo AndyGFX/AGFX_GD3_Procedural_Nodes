@@ -12,7 +12,7 @@ export var invert = false;
 var sorroundCells = Array()
 
 class empty_cell:
-	var empty = 0
+	var value = 0
 	
 	
 func _init(w:int,h:int):
@@ -50,6 +50,30 @@ func GenerateMap():
 		pass
 	pass
 
+func InvertMap():
+	for x in range(self.width):		
+		for y in range(self.height):
+			if self.data[x][y].value == 0:
+				self.data[x][y].value = 1
+			elif self.data[x][y].value == 1:
+				self.data[x][y].value = 0
+
+
+func RandomFill(empty,fill,chance):
+	if (self.randomSeed):
+		randomize()
+		self._seed_ = randi()
+	
+	seed(self._seed_)	
+
+	for x in range(self.width):		
+		for y in range(self.height):
+			if (randi()%100)<chance:
+				self.data[x][y].value = 0
+			else:
+				self.data[x][y].value = 1
+	pass
+
 func SetMapCells(oldMap):
 	var newMap = []
 	var neighb = 0
@@ -57,7 +81,7 @@ func SetMapCells(oldMap):
 	for x in range(self.width):
 		newMap.append([])
 		for y in range(self.height):
-			newMap[x].append(0)
+			newMap[x].append(empty_cell.new())
 
 	for x in range(self.width):		
 		for y in range(self.height):
@@ -66,20 +90,20 @@ func SetMapCells(oldMap):
 				if (b.x == 0 and b.y == 0): 
 					continue
 				if (x + b.x >= 0 and x + b.x < self.width and y + b.y >= 0 and y + b.y < self.height):
-					neighb += oldMap[x + b.x][ y + b.y]
+					neighb += oldMap[x + b.x][ y + b.y].value
 				else:
 					neighb+=1;
 
-			if (oldMap[x][y]==1):
+			if (oldMap[x][y].value==1):
 				if (neighb < self.deathLimit):
-					newMap[x][y] = 0 
+					newMap[x][y].value = 0 
 				else: 
-					newMap[x][y] = 1
+					newMap[x][y].value = 1
 					
-			if (oldMap[x][y]==0):
+			if (oldMap[x][y].value==0):
 				if (neighb > self.birthLimit): 
-					newMap[x][y] = 1 
+					newMap[x][y].value = 1 
 				else: 
-					newMap[x][y] = 0
+					newMap[x][y].value = 0
 	return newMap	
 

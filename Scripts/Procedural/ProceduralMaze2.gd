@@ -1,6 +1,6 @@
 extends "ProceduralData.gd"
 
-class_name ProceduralMaze2
+class_name ProceduralMaze
 
 var invert = false;
 
@@ -25,26 +25,22 @@ func _init(w:int,h:int):
 func Build():	
 	self.done = false
 	self.GenerateMap()
-	if self.invert: self.InvertMazeMap()
+	if self.invert: self.InvertMap()
 	self.done = true
 	
 func GenerateMap():
 	
 	g_intDepth = 0; 
- 
 	self.DigMaze(self.data, 1, 1); 
-	self.data[1][1] = 2; 
-	self.data[self.width-1][self.height-2] = 1; 
 	pass
 
-func InvertMazeMap():
-	for x in range(0,self.width):		
-		for y in range(0,self.height):
-			
-			self.data[x][y].left = !self.data[x][y].left
-			self.data[x][y].right = !self.data[x][y].right
-			self.data[x][y].up = !self.data[x][y].up
-			self.data[x][y].down = !self.data[x][y].down
+func InvertMap():
+	for x in range(self.width):		
+		for y in range(self.height):
+			if self.data[x][y].value == 0:
+				self.data[x][y].value = 1
+			elif self.data[x][y].value == 1:
+				self.data[x][y].value = 0
 
 func DigMaze(Maze, x:int, y:int):
 	
@@ -53,27 +49,27 @@ func DigMaze(Maze, x:int, y:int):
  
 	g_intDepth = g_intDepth + 1; 
  
-	Maze[x][y] = 1
+	Maze[x][y].value = 1
 	var intCount:int = self.ValidCount(Maze, x, y)
 	
 	while (intCount > 0):
 		match (randi()%4):
 			0:
 				if (self.ValidMove(Maze, x,y-2) > 0):
-					Maze[x][y-1] = 1
+					Maze[x][y-1].value = 1
 					self.DigMaze(Maze, x,y-2) 
 			1:
 				if (self.ValidMove(Maze, x+2,y) > 0):  
-					Maze[x+1][y] = 1; 
+					Maze[x+1][y].value = 1; 
 					self.DigMaze (Maze, x+2,y)
 
 			2:
 				if (self.ValidMove(Maze, x,y+2) > 0): 
-					Maze[x][y+1] = 1
+					Maze[x][y+1].value = 1
 					self.DigMaze (Maze, x,y+2)
 			3:
 				if (ValidMove(Maze, x-2,y) > 0): 
-					Maze[x-1][y] = 1 
+					Maze[x-1][y].value = 1 
 					self.DigMaze (Maze, x-2,y)
 
 		intCount = self.ValidCount(Maze, x, y)
@@ -83,17 +79,19 @@ func DigMaze(Maze, x:int, y:int):
 
 
 func ValidMove(Maze, x:int, y:int):
+	
 	var intResult:int = 0; 
-	if (x>=0 and x<self.width and y>=0 and y<self.height and Maze[x][y] == 0):
+	if (x>=0 and x<self.width and y>=0 and y<self.height and int(Maze[x][y].value) == 0):
 		intResult = 1
-  return intResult; 
+	return intResult
 
 func ValidCount(Maze, x:int, y:int):
 	var intResult:int = 0
  
-	intResult = intResult + self.ValidMove(Maze, x,y-2); 
-	intResult = intResult + self.ValidMove(Maze, x+2,y); 
-	intResult = intResult + self.ValidMove(Maze, x,y+2); 
-	intResult = intResult + self.ValidMove(Maze, x-2,y); 
+	var res = self.ValidMove(Maze, x,y-2)
+	intResult = intResult + self.ValidMove(Maze, x,y-2)
+	intResult = intResult + self.ValidMove(Maze, x+2,y) 
+	intResult = intResult + self.ValidMove(Maze, x,y+2) 
+	intResult = intResult + self.ValidMove(Maze, x-2,y) 
  
 	return intResult; 
