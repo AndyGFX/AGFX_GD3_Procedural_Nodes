@@ -3,46 +3,54 @@ extends "ProceduralData.gd"
 class_name ProceduralRooms
 
 var invert = false;
-var room_count = Vector2(5,5)
 var maze
-var user_seed = 0
+
 
 class empty_room:
 	var up:int = 1
 	var right:int = 1
 	var down:int = 1
+	var left:int = 1
 	var visited:int = 0
 
-func _init(x:int,y:int,rnd:bool,useed:int):
-	self.room_count = Vector2(x,y)
-	self.maze = ProceduralMaze.new(self.room_count.x * 3,self.room_count.y * 3,rnd,useed)	
+func _init(w:int,h:int,rnd:bool,useed:int):
+
+	self.width = w
+	self.height = h
+	self.maze = ProceduralMaze.new(self.width * 2+1,self.height * 2+1,rnd,useed)	
+	self.Create(empty_room)
+	self.Clean(empty_room)	
+	
 	pass
 	
 func _ready():
-	self.Create(empty_room)
-	self.Clean(empty_room)
+
 	pass
 
-func Random(mode):
-	self.maze.randomSeed = mode
 
 func Build():
 	self.done = false
-	self.GenerateMap()
-	if self.invert: self.InvertMap()
+	self.GenerateMap()	
 	self.done = true
-
-func InvertMap():
-	pass
 
 func GenerateMap():
 	
 	# generate maze
-	self.maze.invert = true
+	self.maze.invert = false
 	self.maze.Build()
 	
 	# create rooms from maze
 	
+	for y in range(0,self.height):
+		for x in range(0,self.width):
+			var mx = ((x*2) + 1)
+			var my = ((y*2) + 1)
+			self.data[x][y].up = self.maze.data[mx][my-1].value
+			self.data[x][y].down = self.maze.data[mx][my+1].value
+			self.data[x][y].left = self.maze.data[mx-1][my].value
+			self.data[x][y].right = self.maze.data[mx+1][my].value
+			pass
+		pass
 	
 	
 	pass

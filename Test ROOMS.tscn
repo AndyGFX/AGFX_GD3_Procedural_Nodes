@@ -15,7 +15,6 @@ centered = false
 
 [node name="Preview_ROOMS" type="Sprite" parent="."]
 position = Vector2( 275.789, 16.8421 )
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 centered = false
-

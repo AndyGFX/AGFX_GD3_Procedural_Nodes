@@ -14,4 +14,3 @@ position = Vector2( 10.5263, 11.5789 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 centered = false
-
