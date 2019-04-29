@@ -15,9 +15,7 @@ class empty_room:
 
 func _init(x:int,y:int,rnd:bool,useed:int):
 	self.room_count = Vector2(x,y)
-	self.maze = ProceduralMaze.new(self.room_count.x * 3,self.room_count.y * 3)
-	self.maze.randomSeed = rnd
-	self.maze._seed_ = useed
+	self.maze = ProceduralMaze.new(self.room_count.x * 3,self.room_count.y * 3,rnd,useed)	
 	pass
 	
 func _ready():

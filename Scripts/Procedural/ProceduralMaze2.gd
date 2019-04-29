@@ -13,10 +13,12 @@ class empty_cell:
 	var value:int = 0
 	
 
-func _init(w:int,h:int):
+func _init(w:int,h:int,rnd:bool,useed:int):
 	
 	self.width = w
 	self.height = h	
+	self.randomSeed = rnd
+	self._seed_ = useed
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 	pass
