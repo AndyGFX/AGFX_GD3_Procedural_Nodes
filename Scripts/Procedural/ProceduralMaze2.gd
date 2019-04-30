@@ -3,10 +3,6 @@ extends "ProceduralData.gd"
 class_name ProceduralMaze
 
 var invert = false;
-
-var EMPTY:bool = false
-var WALL:bool = true
-
 var g_intDepth:int = 0 
 
 class empty_cell:
