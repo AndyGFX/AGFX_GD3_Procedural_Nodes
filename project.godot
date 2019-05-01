@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="GD3_Procedural_Nodes"
-run/main_scene="res://MazePreview.tscn"
+run/main_scene="res://Test ROOMS.tscn"
 config/icon="res://icon.png"
 
 [autoload]

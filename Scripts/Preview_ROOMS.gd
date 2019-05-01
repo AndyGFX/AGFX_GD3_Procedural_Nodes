@@ -7,6 +7,7 @@ export var RandomSeed:bool = false
 var proceduralData
 var paint_maze:Image
 var paint_rooms:Image
+var rscale:int = 5
 
 
 func _ready():
@@ -20,7 +21,7 @@ func _ready():
 	self.paint_maze.create(self.proceduralData.width*2+1,self.proceduralData.height*2+1,false,Image.FORMAT_RGBA8)	
 	
 	self.paint_rooms = Image.new()	
-	self.paint_rooms.create(self.proceduralData.width*4,self.proceduralData.height*4,false,Image.FORMAT_RGBA8)	
+	self.paint_rooms.create(self.proceduralData.width*self.rscale,self.proceduralData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 
 	
 
@@ -28,14 +29,12 @@ func _draw():
 
 	
 	PreviewMaze()
-	
-	
-	var itex1 = ImageTexture.new()    	
+	var itex1 = ImageTexture.new()
 	itex1.create_from_image(self.paint_maze,0)
 	$Preview_MAZE.set_texture(itex1)
 	
 	PreviewRooms()
-	var itex2 = ImageTexture.new()    	
+	var itex2 = ImageTexture.new()
 	itex2.create_from_image(self.paint_rooms,0)
 	$Preview_ROOMS.set_texture(itex2)
 	
@@ -64,25 +63,30 @@ func PreviewRooms():
 	for y in range(0,self.proceduralData.height):
 		for x in range(0,self.proceduralData.width):
 		
-			if (self.proceduralData.data[x][y].left==1): _DrawDoor(x,y,0,1)
-			if (self.proceduralData.data[x][y].right==1): _DrawDoor(x,y,2,1)
-			if (self.proceduralData.data[x][y].up==1): _DrawDoor(x,y,1,0)
-			if (self.proceduralData.data[x][y].down==1): _DrawDoor(x,y,1,2)
+			if (self.proceduralData.data[x][y].left==1): _DrawDoor(x,y,0,2)
+			if (self.proceduralData.data[x][y].right==1): _DrawDoor(x,y,4,2)
+			if (self.proceduralData.data[x][y].up==1): _DrawDoor(x,y,2,0)
+			if (self.proceduralData.data[x][y].down==1): _DrawDoor(x,y,2,4)
 	
 	pass
 
+
 func _DrawCell(x:int,y:int):
 	
-	for rx in range(0,3):
-		for ry in range(0,3):
+	for rx in range(0,self.rscale):
+		for ry in range(0,self.rscale):
 			self.paint_rooms.lock()
-			self.paint_rooms.set_pixel(x*3+rx,y*3+ry,Color.red)
+			self.paint_rooms.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.white)
+			if rx==0: self.paint_rooms.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
+			if rx==self.rscale-1: self.paint_rooms.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
+			if ry==0: self.paint_rooms.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
+			if ry==self.rscale-1: self.paint_rooms.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
 			self.paint_rooms.unlock()
-	self.paint_rooms.lock()
-	self.paint_rooms.set_pixel(x*3+1,y*3+1,Color.black)
-	self.paint_rooms.unlock()
+#	self.paint_rooms.lock()
+#	self.paint_rooms.set_pixel(x*self.rscale+2,y*self.rscale+2,Color.black)
+#	self.paint_rooms.unlock()
 	
 func _DrawDoor(x:int,y:int,wx:int,wy:int):
 	self.paint_rooms.lock()
-	self.paint_rooms.set_pixel(x*3+wx,y*3+wy,Color.green)
+	self.paint_rooms.set_pixel(x*self.rscale+wx,y*self.rscale+wy,Color.white)
 	self.paint_rooms.unlock()
