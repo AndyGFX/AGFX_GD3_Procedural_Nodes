@@ -29,14 +29,10 @@ func _draw():
 
 	
 	PreviewMaze()
-	var itex1 = ImageTexture.new()
-	itex1.create_from_image(self.paint_maze,0)
-	$Preview_MAZE.set_texture(itex1)
+	$Preview_MAZE.set_texture(Utils.CreateTextureFromImage(self.paint_maze))
 	
 	PreviewRooms()
-	var itex2 = ImageTexture.new()
-	itex2.create_from_image(self.paint_rooms,0)
-	$Preview_ROOMS.set_texture(itex2)
+	$Preview_ROOMS.set_texture(Utils.CreateTextureFromImage(self.paint_rooms))
 	
 func PreviewMaze():
 
