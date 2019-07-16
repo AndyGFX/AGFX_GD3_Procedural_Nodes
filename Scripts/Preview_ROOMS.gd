@@ -78,9 +78,7 @@ func _DrawCell(x:int,y:int):
 			if ry==0: self.paint_rooms.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
 			if ry==self.rscale-1: self.paint_rooms.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
 			self.paint_rooms.unlock()
-#	self.paint_rooms.lock()
-#	self.paint_rooms.set_pixel(x*self.rscale+2,y*self.rscale+2,Color.black)
-#	self.paint_rooms.unlock()
+
 	
 func _DrawDoor(x:int,y:int,wx:int,wy:int):
 	self.paint_rooms.lock()
