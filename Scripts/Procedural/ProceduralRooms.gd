@@ -21,19 +21,12 @@ func _init(w:int,h:int,rnd:bool,useed:int):
 	self.Create(empty_room)
 	self.Clean(empty_room)	
 	
-	pass
-	
-func _ready():
-
-	pass
-
-
-func Build():
+func Build()->void:
 	self.done = false
 	self.GenerateMap()	
 	self.done = true
 
-func GenerateMap():
+func GenerateMap()->void:
 	
 	# generate maze
 	self.maze.invert = false
@@ -51,6 +44,3 @@ func GenerateMap():
 			self.data[x][y].right = self.maze.data[mx+1][my].value
 			pass
 		pass
-	
-	
-	pass

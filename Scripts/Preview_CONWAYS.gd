@@ -1,5 +1,13 @@
 extends Node2D
 
+
+export (int, 100) var cellSpawnChance = 50
+export (int, 1,8) var birthLimit = 4
+export (int, 1,8) var deathLimit = 4
+export (int, 1,10) var repeatCount = 4
+
+export var invert = false;
+
 var procedural
 var paint:Image
 
@@ -8,18 +16,18 @@ func _ready():
 	self.procedural = ProceduralConways.new(128,128)
 	
 	
-	self.procedural.birthLimit = 4
-	self.procedural.cellSpawnChance = 50
-	self.procedural.birthLimit = 4
-	self.procedural.deathLimit = 4
-	self.procedural.repeatCount = 4	
+	
+	self.procedural.cellSpawnChance = self.cellSpawnChance
+	self.procedural.birthLimit = self.birthLimit
+	self.procedural.deathLimit = self.deathLimit
+	self.procedural.repeatCount = self.repeatCount
 	
 	self.paint = Image.new()	
 	self.paint.create(self.procedural.width,self.procedural.height,false,Image.FORMAT_RGBA8)
 	
 	
 	self.procedural.Build()
-	self.procedural.InvertMap()
+	if self.invert: self.procedural.InvertMap()
 	
 	pass
 

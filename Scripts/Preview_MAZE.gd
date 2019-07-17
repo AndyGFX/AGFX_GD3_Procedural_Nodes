@@ -5,6 +5,7 @@ export var userSeed:int = 2019
 export var randomSeed:bool = false
 export var mazeWidth:int = 57
 export var mazeHeight:int = 57
+export var invert = true
 var proceduralData
 
 var paint:Image
@@ -17,7 +18,7 @@ func _ready():
 	self.paint.create(self.proceduralData.width*2+1,self.proceduralData.height*2+1,false,Image.FORMAT_RGBA8)
 	
 	
-	self.proceduralData.invert = true	
+	self.proceduralData.invert = self.invert
 	self.proceduralData.Build()
 	
 	pass

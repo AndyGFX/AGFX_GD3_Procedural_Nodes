@@ -34,23 +34,21 @@ func _init(w:int,h:int):
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 	self.Build()
-	
-	pass
 
-func Build():
+func Build()->void:
 	self.done = false
 	self.RandomFill(0,1,self.cellSpawnChance)
 	self.GenerateMap()
 	if self.invert: self.InvertMap()
 	self.done = true
 	
-func GenerateMap():
+func GenerateMap()->void:
 	for i in range(self.repeatCount):
 		self.data = self.SetMapCells(self.data)
 		pass
 	pass
 
-func InvertMap():
+func InvertMap()->void:
 	for x in range(self.width):		
 		for y in range(self.height):
 			if self.data[x][y].value == 0:
@@ -59,7 +57,7 @@ func InvertMap():
 				self.data[x][y].value = 0
 
 
-func RandomFill(empty,fill,chance):
+func RandomFill(empty,fill,chance)->void:
 	if (self.randomSeed):
 		randomize()
 		self._seed_ = randi()
@@ -74,7 +72,7 @@ func RandomFill(empty,fill,chance):
 				self.data[x][y].value = 1
 	pass
 
-func SetMapCells(oldMap):
+func SetMapCells(oldMap)->Array:
 	var newMap = []
 	var neighb = 0
 

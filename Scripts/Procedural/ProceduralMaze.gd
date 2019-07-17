@@ -20,13 +20,13 @@ func _init(w:int,h:int,rnd:bool,useed:int):
 	pass
 	
 
-func Build():	
+func Build()->void:	
 	self.done = false
 	self.GenerateMap()
 	if self.invert: self.InvertMap()
 	self.done = true
 	
-func GenerateMap():
+func GenerateMap()->void:
 	
 	g_intDepth = 0; 
 	
@@ -37,9 +37,8 @@ func GenerateMap():
 	seed(self._seed_)	
 
 	self.DigMaze(self.data, 1, 1); 
-	pass
 
-func InvertMap():
+func InvertMap()->void:
 	for x in range(self.width):		
 		for y in range(self.height):
 			if self.data[x][y].value == 0:
@@ -47,7 +46,7 @@ func InvertMap():
 			elif self.data[x][y].value == 1:
 				self.data[x][y].value = 0
 
-func DigMaze(Maze, x:int, y:int):
+func DigMaze(Maze, x:int, y:int)->void:
 	
 	var newx:int = 0; 
 	var newy:int = 0; 
@@ -80,17 +79,16 @@ func DigMaze(Maze, x:int, y:int):
 		intCount = self.ValidCount(Maze, x, y)
 		pass
 	 g_intDepth = g_intDepth - 1
-	pass
 
 
-func ValidMove(Maze, x:int, y:int):
+func ValidMove(Maze, x:int, y:int)->int:
 	
 	var intResult:int = 0; 
 	if (x>=0 and x<self.width and y>=0 and y<self.height and int(Maze[x][y].value) == 0):
 		intResult = 1
 	return intResult
 
-func ValidCount(Maze, x:int, y:int):
+func ValidCount(Maze, x:int, y:int)->int:
 	var intResult:int = 0
  
 	var res = self.ValidMove(Maze, x,y-2)

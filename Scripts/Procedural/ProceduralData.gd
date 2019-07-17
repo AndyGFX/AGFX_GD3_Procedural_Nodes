@@ -7,6 +7,8 @@ export var height = 32
 export var randomSeed = true
 # warning-ignore:unused_class_variable
 export var _seed_ = 123456
+
+# storage for proceduraly generated data
 var data = []
 # warning-ignore:unused_class_variable
 var done = false;

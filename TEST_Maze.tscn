@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scripts/Preview_MAZE2.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Preview_MAZE.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/TmpSprite.png" type="Texture" id=2]
 
 [node name="Node2D" type="Node2D"]
@@ -10,3 +10,4 @@ script = ExtResource( 1 )
 position = Vector2( 145, 145 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
+
