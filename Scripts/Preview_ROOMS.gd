@@ -23,7 +23,6 @@ func _ready():
 	self.paint_rooms = Image.new()	
 	self.paint_rooms.create(self.proceduralRoomData.width*self.rscale,self.proceduralRoomData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 
-	print(self.proceduralRoomData.ToString(0,0))
 
 func _draw():
 
@@ -54,6 +53,7 @@ func PreviewRooms()->void:
 	for x in range(0,self.proceduralRoomData.width):
 		for y in range(0,self.proceduralRoomData.height):
 			self._DrawCell(x,y)
+			print("["+String(x)+","+String(y)+"]="+self.proceduralRoomData.ToString(x,y)) 
 
 	# draw doors
 	for y in range(0,self.proceduralRoomData.height):
