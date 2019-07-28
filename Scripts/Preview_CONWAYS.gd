@@ -13,7 +13,7 @@ var paint:Image
 
 func _ready():
 
-	self.procedural = ProceduralConways.new(128,128)
+	self.procedural = ProceduralConways.new(24,24)
 	
 	
 	
@@ -53,3 +53,10 @@ func PreviewAsOverlay():
 				self.paint.unlock()
 
 	pass
+
+
+func _on_Button_pressed():
+	self.procedural.Build()
+	if self.invert: self.procedural.InvertMap()
+	update()
+	pass # Replace with function body.

@@ -5,7 +5,8 @@
 
 [node name="Test ROOMS" type="Node2D"]
 script = ExtResource( 1 )
-room_count = Vector2( 14, 11 )
+room_count = Vector2( 14, 9 )
+userSeed = 125
 
 [node name="Preview_MAZE" type="Sprite" parent="."]
 position = Vector2( 12.6316, 15.7895 )
@@ -18,4 +19,3 @@ position = Vector2( 275.789, 16.8421 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 centered = false
-

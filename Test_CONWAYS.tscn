@@ -5,11 +5,17 @@
 
 [node name="TestConways" type="Node2D"]
 script = ExtResource( 1 )
+birthLimit = 5
 invert = true
 
 [node name="Preview" type="Sprite" parent="."]
-position = Vector2( 22, 20 )
+position = Vector2( 25, 37 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 centered = false
 
+[node name="Button" type="Button" parent="."]
+margin_right = 127.0
+margin_bottom = 20.0
+text = "Generate"
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

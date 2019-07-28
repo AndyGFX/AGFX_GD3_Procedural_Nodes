@@ -5,9 +5,13 @@
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
+randomSeed = true
+mazeWidth = 19
+mazeHeight = 9
+invert = false
 
 [node name="Preview" type="Sprite" parent="."]
-position = Vector2( 145, 145 )
-scale = Vector2( 2, 2 )
+position = Vector2( 11, 10 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
-
+centered = false

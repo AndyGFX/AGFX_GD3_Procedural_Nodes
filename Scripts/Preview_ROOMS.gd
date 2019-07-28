@@ -23,7 +23,7 @@ func _ready():
 	self.paint_rooms = Image.new()	
 	self.paint_rooms.create(self.proceduralRoomData.width*self.rscale,self.proceduralRoomData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 
-	
+	print(self.proceduralRoomData.ToString(0,0))
 
 func _draw():
 
@@ -39,10 +39,10 @@ func PreviewMaze()->void:
 	for x in range(0,self.proceduralRoomData.maze.width):
 		for y in range(0,self.proceduralRoomData.maze.height):
 			self.paint_maze.lock()
-			if (self.proceduralRoomData.maze.data[x][y].value==1):
-				self.paint_maze.set_pixel(x,y,Color(1,1,1,1))
-			else:
+			if (self.proceduralRoomData.maze.data[x][y].value==0):
 				self.paint_maze.set_pixel(x,y,Color(0,0,0,1))
+			else:
+				self.paint_maze.set_pixel(x,y,Color(1,1,1,1))
 			self.paint_maze.unlock()
 	
 	pass
