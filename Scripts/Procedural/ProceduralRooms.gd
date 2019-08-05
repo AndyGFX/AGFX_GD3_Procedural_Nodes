@@ -14,6 +14,7 @@ class empty_room:
 	var down:int = eSide.EXIT
 	var left:int = eSide.EXIT
 	var visited:int = 0
+	var userData:Dictionary = {}
 	
 func _init(w:int,h:int,rnd:bool,useed:int):
 
