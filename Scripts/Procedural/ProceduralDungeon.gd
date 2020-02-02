@@ -4,7 +4,6 @@ class_name ProceduralDungeon
 enum eSide {WALL,EXIT}
 var origin_bottomleft:bool = false
 var invert = false;
-var cells
 
 # 0 = no way => WALL
 # 1 =  exit
@@ -20,13 +19,12 @@ func _init(w:int,h:int,rnd:bool,useed:int):
 
 	self.width = w
 	self.height = h
-	self.cells = ProceduralMaze.new(self.width * 2+1,self.height * 2+1,rnd,useed)	
 	self.Create(empty_cell)
 	self.Clean(empty_cell)	
 	
 func Build()->void:
 	self.done = false
-	self.GenerateMap()	
+	self.GenerateMap_Pass1()	
 	self.done = true
 
 func IsUp(x:int,y:int,sideType:int)->bool:
@@ -76,26 +74,22 @@ func GetCell(x:int,y:int)->empty_cell:
 	return self.data[x][_y]
 	pass
 	
-func GenerateMap()->void:
-	
-	# generate maze
-	self.cells.invert = false
-	self.cells.Build()
+func GenerateMap_Pass1()->void:
 	
 	var mx = 0
 	var my = 0
 	
-	# create rooms from maze
+	# create closed rooms array
 	for x in range(0,self.width):
 		for y in range(0,self.height):
 			
 			mx = ((x*2) + 1)			
 			my = ((y*2) + 1)  # origin bottom/left
 				
-			self.data[x][y].up = self.cells.data[mx][my-1].value
-			self.data[x][y].down = self.cells.data[mx][my+1].value
+			self.data[x][y].up = eSide.WALL
+			self.data[x][y].down = eSide.WALL
 				
-			self.data[x][y].left = self.cells.data[mx-1][my].value
-			self.data[x][y].right = self.cells.data[mx+1][my].value
+			self.data[x][y].left = eSide.WALL
+			self.data[x][y].right = eSide.WALL
 			
 		pass
