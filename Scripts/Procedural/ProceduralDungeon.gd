@@ -1,30 +1,56 @@
 extends "ProceduralData.gd"
 
 class_name ProceduralDungeon
-enum eSide {WALL,EXIT}
+
+#ENUMS
+
+enum eSideType {WALL,EXIT}
+enum eBuildMode {SPELUNKY,PATH,MAZE}
+enum eStartSide {TOP,RIGHT,BOTTOM,LEFT}
+
+#VARS
+
 var origin_bottomleft:bool = false
-var invert = false;
+var buildMode:int = eBuildMode.SPELUNKY
+var startSide:int = eStartSide.TOP
 
 # 0 = no way => WALL
-# 1 =  exit
+# 1 =  exit/door/corridor
+
 class empty_cell:
-	var up:int = eSide.EXIT
-	var right:int = eSide.EXIT
-	var down:int = eSide.EXIT
-	var left:int = eSide.EXIT
+	var up:int = eSideType.EXIT
+	var right:int = eSideType.EXIT
+	var down:int = eSideType.EXIT
+	var left:int = eSideType.EXIT
 	var visited:int = 0
+	var nextCell:Vector2 = Vector2(-1,-1)
 	var userData:Dictionary = {}
 	
 func _init(w:int,h:int,rnd:bool,useed:int):
 
+	# max rooms count in X
 	self.width = w
+	
+	# max rooms count in Y
 	self.height = h
+	
 	self.Create(empty_cell)
-	self.Clean(empty_cell)	
+	self.Clean(empty_cell)
 	
 func Build()->void:
 	self.done = false
-	self.GenerateMap_Pass1()	
+	
+	# prepare dungeon cells
+	self.GenerateMap_Pass1()
+	
+	# build dungeon cells by mode
+	match self.buildMode:
+		eBuildMode.SPELUNKY:
+			self.GenerateMapAsSpelunky()
+		eBuildMode.PATH:
+			self.GenerateMapAsPath()
+		eBuildMode.MAZE:
+			self.GenerateMapAsMaze()
 	self.done = true
 
 func IsUp(x:int,y:int,sideType:int)->bool:
@@ -79,17 +105,27 @@ func GenerateMap_Pass1()->void:
 	var mx = 0
 	var my = 0
 	
-	# create closed rooms array
+	# create closed rooms array 
 	for x in range(0,self.width):
 		for y in range(0,self.height):
 			
 			mx = ((x*2) + 1)			
 			my = ((y*2) + 1)  # origin bottom/left
 				
-			self.data[x][y].up = eSide.WALL
-			self.data[x][y].down = eSide.WALL
+			self.data[x][y].up = eSideType.WALL
+			self.data[x][y].down = eSideType.WALL
 				
-			self.data[x][y].left = eSide.WALL
-			self.data[x][y].right = eSide.WALL
+			self.data[x][y].left = eSideType.WALL
+			self.data[x][y].right = eSideType.WALL
 			
 		pass
+
+
+func GenerateMapAsMaze()->void:
+	pass
+	
+func GenerateMapAsSpelunky()->void:
+	pass
+	
+func GenerateMapAsPath()->void:
+	pass

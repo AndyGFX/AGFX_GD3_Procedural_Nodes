@@ -1,7 +1,7 @@
 extends Node2D
 
 
-export var room_count:Vector2 = Vector2(5,5)
+export var room_count:Vector2 = Vector2(8,8)
 export var userSeed:int = 2019
 export var RandomSeed:bool = false
 var proceduralDungeonData = null
@@ -37,10 +37,10 @@ func PreviewRooms()->void:
 	for y in range(0,self.proceduralDungeonData.height):
 		for x in range(0,self.proceduralDungeonData.width):
 		
-			if (self.proceduralDungeonData.data[x][y].left==ProceduralDungeon.eSide.EXIT): _DrawDoor(x,y,0,floor(rscale/2.0))
-			if (self.proceduralDungeonData.data[x][y].right==ProceduralDungeon.eSide.EXIT): _DrawDoor(x,y,2*floor(rscale/2.0),floor(rscale/2.0))
-			if (self.proceduralDungeonData.data[x][y].up==ProceduralDungeon.eSide.EXIT): _DrawDoor(x,y,floor(rscale/2.0),0)
-			if (self.proceduralDungeonData.data[x][y].down==ProceduralDungeon.eSide.EXIT): _DrawDoor(x,y,floor(rscale/2.0),2*floor(rscale/2.0))
+			if (self.proceduralDungeonData.data[x][y].left==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,0,floor(rscale/2.0))
+			if (self.proceduralDungeonData.data[x][y].right==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,2*floor(rscale/2.0),floor(rscale/2.0))
+			if (self.proceduralDungeonData.data[x][y].up==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,floor(rscale/2.0),0)
+			if (self.proceduralDungeonData.data[x][y].down==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,floor(rscale/2.0),2*floor(rscale/2.0))
 	
 	pass
 
