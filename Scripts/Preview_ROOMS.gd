@@ -84,3 +84,4 @@ func _DrawDoor(x:int,y:int,wx:int,wy:int)->void:
 	self.paint_rooms.lock()
 	self.paint_rooms.set_pixel(x*self.rscale+wx,y*self.rscale+wy,Color.white)
 	self.paint_rooms.unlock()
+	

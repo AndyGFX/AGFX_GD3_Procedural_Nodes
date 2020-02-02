@@ -9,7 +9,7 @@ export (int, 1,10) var repeatCount = 3
 
 export var invert = false;
 
-var sorroundCells = Array()
+var surroundCells = Array()
 
 class empty_cell:
 	var value = 0
@@ -19,16 +19,16 @@ func _init(w:int,h:int):
 	
 	self.width = w
 	self.height = h
-	self.sorroundCells.append(Vector2(-1,-1))
-	self.sorroundCells.append(Vector2(-1,0))
-	self.sorroundCells.append(Vector2(-1,1))
+	self.surroundCells.append(Vector2(-1,-1))
+	self.surroundCells.append(Vector2(-1,0))
+	self.surroundCells.append(Vector2(-1,1))
 
-	self.sorroundCells.append(Vector2(0,-1))	
-	self.sorroundCells.append(Vector2(0,1))
+	self.surroundCells.append(Vector2(0,-1))	
+	self.surroundCells.append(Vector2(0,1))
 
-	self.sorroundCells.append(Vector2(1,-1))
-	self.sorroundCells.append(Vector2(1,0))
-	self.sorroundCells.append(Vector2(1,1))
+	self.surroundCells.append(Vector2(1,-1))
+	self.surroundCells.append(Vector2(1,0))
+	self.surroundCells.append(Vector2(1,1))
 
 	
 	self.Create(empty_cell)
@@ -84,7 +84,7 @@ func SetMapCells(oldMap)->Array:
 	for x in range(self.width):		
 		for y in range(self.height):
 			neighb = 0
-			for b in self.sorroundCells:				
+			for b in self.surroundCells:				
 				if (b.x == 0 and b.y == 0): 
 					continue
 				if (x + b.x >= 0 and x + b.x < self.width and y + b.y >= 0 and y + b.y < self.height):
