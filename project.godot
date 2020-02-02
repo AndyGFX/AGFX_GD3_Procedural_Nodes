@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://Scripts/Procedural/ProceduralConways.gd"
 }, {
 "base": "",
+"class": "ProceduralDungeon",
+"language": "GDScript",
+"path": "res://Scripts/Procedural/ProceduralDungeon.gd"
+}, {
+"base": "",
 "class": "ProceduralMaze",
 "language": "GDScript",
 "path": "res://Scripts/Procedural/ProceduralMaze.gd"
@@ -26,6 +31,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "ProceduralConways": "",
+"ProceduralDungeon": "",
 "ProceduralMaze": "",
 "ProceduralRooms": ""
 }
@@ -33,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="GD3_Procedural_Nodes"
-run/main_scene="res://Test_ROOMS.tscn"
+run/main_scene="res://Test_Dungeon.tscn"
 config/icon="res://icon.png"
 
 [autoload]
