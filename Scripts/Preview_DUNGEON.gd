@@ -2,6 +2,8 @@ extends Node2D
 
 
 export var room_count:Vector2 = Vector2(8,8)
+export (ProceduralDungeon.eBuildMode) var buildMode = ProceduralDungeon.eBuildMode.SPELUNKY
+export (ProceduralDungeon.eStartSide) var startOnSide = ProceduralDungeon.eStartSide.TOP
 export var userSeed:int = 2019
 export var RandomSeed:bool = false
 var proceduralDungeonData = null
