@@ -8,14 +8,13 @@ enum eSideType {WALL,EXIT}
 enum eBuildMode {SPELUNKY,PATH,MAZE}
 enum eStartSide {TOP,RIGHT,BOTTOM,LEFT,RANDOM}
 enum eCellType {UNUSED_CELL,LEVEL_CELL,EXTENDED_CELL}
+
 #VARS
 
 var origin_bottomleft:bool = false
 var buildMode:int = eBuildMode.SPELUNKY
 var startSide:int = eStartSide.TOP
 
-# 0 = no way => WALL
-# 1 =  exit/door/corridor
 
 class empty_cell:
 	var up:int = eSideType.EXIT
@@ -62,6 +61,11 @@ func Build()->void:
 		eBuildMode.MAZE:
 			self.GenerateMapAsMaze()
 	self.done = true
+
+
+func Reset():
+	self.Create(empty_cell)
+	self.Clean(empty_cell)
 
 func IsUp(x:int,y:int,sideType:int)->bool:
 	var res=false

@@ -35,6 +35,8 @@ func PreviewRooms()->void:
 	# draw walls
 	for x in range(0,self.proceduralDungeonData.width):
 		for y in range(0,self.proceduralDungeonData.height):
+			self._ClearCell(x,y,Color.blue)
+			
 			if self.proceduralDungeonData.data[x][y].cellType == ProceduralDungeon.eCellType.UNUSED_CELL:
 				self._DrawCell(x,y,Color.red)
 			if self.proceduralDungeonData.data[x][y].cellType == ProceduralDungeon.eCellType.LEVEL_CELL:
@@ -46,7 +48,7 @@ func PreviewRooms()->void:
 	# draw doors
 	for y in range(0,self.proceduralDungeonData.height):
 		for x in range(0,self.proceduralDungeonData.width):
-		
+					
 			if (self.proceduralDungeonData.data[x][y].left==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,0,floor(rscale/2.0))
 			if (self.proceduralDungeonData.data[x][y].right==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,2*floor(rscale/2.0),floor(rscale/2.0))
 			if (self.proceduralDungeonData.data[x][y].up==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,floor(rscale/2.0),0)
@@ -54,16 +56,26 @@ func PreviewRooms()->void:
 	
 	pass
 
+func _ClearCell(x:int,y:int, color:Color)->void:
+	
+	self.paint_dungeons.lock()
+	
+	for rx in range(0,self.rscale):
+		for ry in range(0,self.rscale):
+			self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
+	self.paint_dungeons.unlock()
 
 func _DrawCell(x:int,y:int, color:Color)->void:
 	
 	
 	
 	self.paint_dungeons.lock()
+				
 	for rx in range(0,self.rscale):
 		for ry in range(0,self.rscale):
 			
-			self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.white)
+			self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color(1,1,1,1))
+			
 			if rx==0: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
 			if rx==self.rscale-1: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
 			if ry==0: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
@@ -84,19 +96,13 @@ func _DrawDoor(x:int,y:int,wx:int,wy:int)->void:
 
 func _on_Button_pressed():
 
-	self.paint_dungeons = Image.new()
-	self.paint_dungeons.create(self.proceduralDungeonData.width*self.rscale,self.proceduralDungeonData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 	
-	self.proceduralDungeonData.buildMode = self.buildMode
-	self.proceduralDungeonData.startSide = self.startOnSide
+	self.proceduralDungeonData.Reset()
 	self.proceduralDungeonData.Build()
-
 	
-		
+	
 	PreviewRooms()
-
 	$Preview_DUNGEON.set_texture(Utils.CreateTextureFromImage(self.paint_dungeons))
 	
-	print("Rebuild ... ")
 	
 
