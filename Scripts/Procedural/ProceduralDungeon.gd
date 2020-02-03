@@ -6,8 +6,8 @@ class_name ProceduralDungeon
 
 enum eSideType {WALL,EXIT}
 enum eBuildMode {SPELUNKY,PATH,MAZE}
-enum eStartSide {TOP,RIGHT,BOTTOM,LEFT}
-
+enum eStartSide {TOP,RIGHT,BOTTOM,LEFT,RANDOM}
+enum eCellType {UNUSED_CELL,LEVEL_CELL,EXTENDED_CELL}
 #VARS
 
 var origin_bottomleft:bool = false
@@ -23,6 +23,7 @@ class empty_cell:
 	var down:int = eSideType.EXIT
 	var left:int = eSideType.EXIT
 	var visited:int = 0
+	var cellType:int = 0
 	var nextCell:Vector2 = Vector2(-1,-1)
 	var userData:Dictionary = {}
 	
@@ -34,6 +35,9 @@ func _init(w:int,h:int,rnd:bool,useed:int):
 	# max rooms count in Y
 	self.height = h
 	
+	self.randomSeed = rnd
+	self._seed_ = useed
+	
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 	
@@ -42,6 +46,12 @@ func Build()->void:
 	
 	# prepare dungeon cells
 	self.GenerateMap_Pass1()
+	
+	if (self.randomSeed):
+		randomize()
+		self._seed_ = randi()
+	
+	seed(self._seed_)	
 	
 	# build dungeon cells by mode
 	match self.buildMode:
@@ -93,12 +103,11 @@ func ToString(x,y):
 	else:
 		_y = y
 	return "{"+String(self.data[_x][_y].up)+","+String(self.data[_x][_y].right)+","+String(self.data[_x][_y].down)+","+String(self.data[_x][_y].left)+"}"
-	pass
 	
 func GetCell(x:int,y:int)->empty_cell:
 	var _y = self.height - y -1
 	return self.data[x][_y]
-	pass
+
 	
 func GenerateMap_Pass1()->void:
 	
@@ -111,20 +120,56 @@ func GenerateMap_Pass1()->void:
 			
 			mx = ((x*2) + 1)			
 			my = ((y*2) + 1)  # origin bottom/left
-				
+	
 			self.data[x][y].up = eSideType.WALL
 			self.data[x][y].down = eSideType.WALL
-				
 			self.data[x][y].left = eSideType.WALL
 			self.data[x][y].right = eSideType.WALL
 			
 		pass
 
+func GetStartRoomPosition()->Vector2:
+	var cx:int = 0
+	var cy:int = 0
+	
+	match self.startSide:
+		eStartSide.TOP:
+			cx = randi() % self.width
+			cy = 0
+			
+		eStartSide.RIGHT:
+			cx = self.width-1
+			cy = randi() % self.height
+			
+		eStartSide.BOTTOM:
+			cx = randi() % self.width
+			cy = self.height-1
+			
+		eStartSide.LEFT:
+			cx = 0
+			cy = randi() % self.height
+		eStartSide.RANDOM:
+			cx = randi() % self.width
+			cy = randi() % self.height
+			
+	return Vector2(cx,cy)
+
 
 func GenerateMapAsMaze()->void:
 	pass
 	
+	
 func GenerateMapAsSpelunky()->void:
+	var max_rooms:int = self.width*self.height
+	var cell_pos:Vector2 = self.GetStartRoomPosition()
+	
+	self.data[cell_pos.x][cell_pos.y].cellType = eCellType.LEVEL_CELL
+	
+	for i in range(0,max_rooms):
+		
+		pass
+	
+	
 	pass
 	
 func GenerateMapAsPath()->void:

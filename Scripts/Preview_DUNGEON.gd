@@ -15,11 +15,14 @@ func _ready():
 	
 	# build rooms
 	self.proceduralDungeonData = ProceduralDungeon.new(self.room_count.x,self.room_count.y,self.RandomSeed,self.userSeed)	
-	self.proceduralDungeonData.Build()
+	self.proceduralDungeonData.buildMode = self.buildMode
+	self.proceduralDungeonData.startSide = self.startOnSide
+	
 	
 	self.paint_dungeons = Image.new()
 	self.paint_dungeons.create(self.proceduralDungeonData.width*self.rscale,self.proceduralDungeonData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 
+	self.proceduralDungeonData.Build()
 
 func _draw():
 	
@@ -32,7 +35,12 @@ func PreviewRooms()->void:
 	# draw walls
 	for x in range(0,self.proceduralDungeonData.width):
 		for y in range(0,self.proceduralDungeonData.height):
-			self._DrawCell(x,y)
+			if self.proceduralDungeonData.data[x][y].cellType == ProceduralDungeon.eCellType.UNUSED_CELL:
+				self._DrawCell(x,y,Color.red)
+			if self.proceduralDungeonData.data[x][y].cellType == ProceduralDungeon.eCellType.LEVEL_CELL:
+				self._DrawCell(x,y,Color.green)
+			if self.proceduralDungeonData.data[x][y].cellType == ProceduralDungeon.eCellType.EXTENDED_CELL:
+				self._DrawCell(x,y,Color.blue)
 			#print("["+String(x)+","+String(y)+"]="+self.proceduralDungeonData.ToString(x,y)) 
 
 	# draw doors
@@ -47,17 +55,19 @@ func PreviewRooms()->void:
 	pass
 
 
-func _DrawCell(x:int,y:int)->void:
+func _DrawCell(x:int,y:int, color:Color)->void:
+	
+	
 	
 	self.paint_dungeons.lock()
 	for rx in range(0,self.rscale):
 		for ry in range(0,self.rscale):
 			
 			self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.white)
-			if rx==0: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
-			if rx==self.rscale-1: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
-			if ry==0: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
-			if ry==self.rscale-1: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,Color.red)
+			if rx==0: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
+			if rx==self.rscale-1: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
+			if ry==0: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
+			if ry==self.rscale-1: self.paint_dungeons.set_pixel(x*self.rscale+rx,y*self.rscale+ry,color)
 	
 	
 	self.paint_dungeons.set_pixel(0,0,Color.black)
@@ -70,3 +80,23 @@ func _DrawDoor(x:int,y:int,wx:int,wy:int)->void:
 	self.paint_dungeons.set_pixel(x*self.rscale+wx,y*self.rscale+wy,Color.white)
 	self.paint_dungeons.unlock()
 	
+
+
+func _on_Button_pressed():
+
+	self.paint_dungeons = Image.new()
+	self.paint_dungeons.create(self.proceduralDungeonData.width*self.rscale,self.proceduralDungeonData.height*self.rscale,false,Image.FORMAT_RGBA8)	
+	
+	self.proceduralDungeonData.buildMode = self.buildMode
+	self.proceduralDungeonData.startSide = self.startOnSide
+	self.proceduralDungeonData.Build()
+
+	
+		
+	PreviewRooms()
+
+	$Preview_DUNGEON.set_texture(Utils.CreateTextureFromImage(self.paint_dungeons))
+	
+	print("Rebuild ... ")
+	
+
