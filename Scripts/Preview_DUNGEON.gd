@@ -27,11 +27,14 @@ func _ready():
 func _draw():
 	
 	PreviewRooms()
-	$Preview_DUNGEON.set_texture(Utils.CreateTextureFromImage(self.paint_dungeons))
+
 
 
 func PreviewRooms()->void:
-			
+
+	self.proceduralDungeonData.Reset()
+	self.proceduralDungeonData.Build()
+	
 	# draw walls
 	for x in range(0,self.proceduralDungeonData.width):
 		for y in range(0,self.proceduralDungeonData.height):
@@ -54,7 +57,7 @@ func PreviewRooms()->void:
 			if (self.proceduralDungeonData.data[x][y].up==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,floor(rscale/2.0),0)
 			if (self.proceduralDungeonData.data[x][y].down==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,floor(rscale/2.0),2*floor(rscale/2.0))
 	
-	pass
+	$Preview_DUNGEON.set_texture(Utils.CreateTextureFromImage(self.paint_dungeons))
 
 func _ClearCell(x:int,y:int, color:Color)->void:
 	
@@ -66,8 +69,6 @@ func _ClearCell(x:int,y:int, color:Color)->void:
 	self.paint_dungeons.unlock()
 
 func _DrawCell(x:int,y:int, color:Color)->void:
-	
-	
 	
 	self.paint_dungeons.lock()
 				
@@ -95,14 +96,5 @@ func _DrawDoor(x:int,y:int,wx:int,wy:int)->void:
 
 
 func _on_Button_pressed():
-
-	
-	self.proceduralDungeonData.Reset()
-	self.proceduralDungeonData.Build()
-	
-	
 	PreviewRooms()
-	$Preview_DUNGEON.set_texture(Utils.CreateTextureFromImage(self.paint_dungeons))
-	
-	
 

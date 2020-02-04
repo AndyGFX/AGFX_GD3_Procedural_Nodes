@@ -6,14 +6,15 @@ class_name ProceduralDungeon
 
 enum eSideType {WALL,EXIT}
 enum eBuildMode {SPELUNKY,PATH,MAZE}
-enum eStartSide {TOP,RIGHT,BOTTOM,LEFT,RANDOM}
+enum eStartSide {TOP=0,RIGHT=1,BOTTOM=2,LEFT=3,RANDOM=4}
 enum eCellType {UNUSED_CELL,LEVEL_CELL,EXTENDED_CELL}
-
+enum eDirections {UP=0,RIGHT=1,DOWN=2,LEFT=3}
 #VARS
 
 var origin_bottomleft:bool = false
 var buildMode:int = eBuildMode.SPELUNKY
 var startSide:int = eStartSide.TOP
+var current_cell:Vector2 = Vector2.ZERO
 
 
 class empty_cell:
@@ -24,10 +25,11 @@ class empty_cell:
 	var visited:int = 0
 	var cellType:int = 0
 	var nextCell:Vector2 = Vector2(-1,-1)
+	var prevCell:Vector2 = Vector2(-1,-1)
 	var userData:Dictionary = {}
 	
 func _init(w:int,h:int,rnd:bool,useed:int):
-
+	
 	# max rooms count in X
 	self.width = w
 	
@@ -64,6 +66,7 @@ func Build()->void:
 
 
 func Reset():
+	self.current_cell = Vector2.ZERO
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 
@@ -132,7 +135,7 @@ func GenerateMap_Pass1()->void:
 			
 		pass
 
-func GetStartRoomPosition()->Vector2:
+func GetStartRoomPosition()->void:
 	var cx:int = 0
 	var cy:int = 0
 	
@@ -156,23 +159,54 @@ func GetStartRoomPosition()->Vector2:
 			cx = randi() % self.width
 			cy = randi() % self.height
 			
-	return Vector2(cx,cy)
+	self.current_cell = Vector2(cx,cy)
 
-
+func GetNextRoomPosition()->void:
+	
+	var dir:int = 0
+	
+	# ---------------------------------------------------------------------- TOP
+	dir = randi() % 3
+	print(dir)
+	
+	match dir:
+		0:
+			if self.current_cell.x<self.width-1:
+				self.current_cell.x=self.current_cell.x+1
+			else:
+				dir = 2
+		1:
+			if self.current_cell.x>0:
+				self.current_cell.x=self.current_cell.x-1
+			else:
+				dir = 2
+		2: 
+			if self.current_cell.y<self.height:
+				self.current_cell.y=self.current_cell.y+1
+		
+	
 func GenerateMapAsMaze()->void:
 	pass
 	
 	
 func GenerateMapAsSpelunky()->void:
 	var max_rooms:int = self.width*self.height
-	var cell_pos:Vector2 = self.GetStartRoomPosition()
 	
-	self.data[cell_pos.x][cell_pos.y].cellType = eCellType.LEVEL_CELL
+	self.GetStartRoomPosition()
+	print(current_cell)
+	self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
+	
+	
+	#cell_pos = self.GetNextRoomPosition(cell_pos)
+	#print(cell_pos)
+	
 	
 	for i in range(0,max_rooms):
-		
-		pass
-	
+		if self.current_cell.y<self.height-1:
+			self.GetNextRoomPosition()
+			print(current_cell)
+			self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
+			
 	
 	pass
 	
