@@ -23,6 +23,7 @@ func _ready():
 	self.paint_dungeons.create(self.proceduralDungeonData.width*self.rscale,self.proceduralDungeonData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 
 	self.proceduralDungeonData.Build()
+	self.proceduralDungeonData.DumpData()
 
 func _draw():
 	

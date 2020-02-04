@@ -132,7 +132,7 @@ func GenerateMap_Pass1()->void:
 			self.data[x][y].down = eSideType.WALL
 			self.data[x][y].left = eSideType.WALL
 			self.data[x][y].right = eSideType.WALL
-			
+			self.data[x][y].cellType = eCellType.UNUSED_CELL
 		pass
 
 func GetStartRoomPosition()->void:
@@ -167,16 +167,15 @@ func GetNextRoomPosition()->void:
 	
 	# ---------------------------------------------------------------------- TOP
 	dir = randi() % 3
-	print(dir)
 	
 	match dir:
 		0:
-			if self.current_cell.x<self.width-1:
+			if self.current_cell.x<self.width-1 && self.data[self.current_cell.x+1][self.current_cell.y].cellType==eCellType.UNUSED_CELL:
 				self.current_cell.x=self.current_cell.x+1
 			else:
 				dir = 2
 		1:
-			if self.current_cell.x>0:
+			if self.current_cell.x>0 && self.data[self.current_cell.x-1][self.current_cell.y].cellType==eCellType.UNUSED_CELL:
 				self.current_cell.x=self.current_cell.x-1
 			else:
 				dir = 2
@@ -195,6 +194,9 @@ func GenerateMapAsSpelunky()->void:
 	self.GetStartRoomPosition()
 	print(current_cell)
 	self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
+
+	# link to previous cell is SAME on start CELL
+	self.data[self.current_cell.x][self.current_cell.y].prevCell = Vector2(self.current_cell.x,self.current_cell.y)
 	
 	
 	#cell_pos = self.GetNextRoomPosition(cell_pos)
@@ -203,12 +205,24 @@ func GenerateMapAsSpelunky()->void:
 	
 	for i in range(0,max_rooms):
 		if self.current_cell.y<self.height-1:
-			self.GetNextRoomPosition()
-			print(current_cell)
-			self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
 			
+			#save current cell position for set link from prev cell to next
+			var prev:Vector2 = Vector2(self.current_cell.x,self.current_cell.y)
+			self.GetNextRoomPosition()
+			self.data[prev.x][prev.y].nextCell = Vector2(self.current_cell.x,self.current_cell.y)
+			self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
+			self.data[self.current_cell.x][self.current_cell.y].prevCell = prev
 	
 	pass
-	
+		
 func GenerateMapAsPath()->void:
 	pass
+
+func DumpData()->void:
+	for x in range(0,self.width):
+		for y in range(0,self.height):
+			if self.data[x][y].cellType==eCellType.LEVEL_CELL:
+				
+				var info:String = "prev: "+String(self.data[x][y].prevCell)+" | curr: "+String(x)+","+String(y)+" next: "+String(self.data[x][y].nextCell)
+				print(info)
+		pass
