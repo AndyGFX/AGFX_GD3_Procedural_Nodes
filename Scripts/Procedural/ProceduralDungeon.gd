@@ -15,7 +15,7 @@ var origin_bottomleft:bool = false
 var buildMode:int = eBuildMode.SPELUNKY
 var startSide:int = eStartSide.TOP
 var current_cell:Vector2 = Vector2.ZERO
-
+var connectedCells:PoolVector2Array = PoolVector2Array()
 
 class empty_cell:
 	var up:int = eSideType.EXIT
@@ -42,6 +42,8 @@ func _init(w:int,h:int,rnd:bool,useed:int):
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 	
+	self.connectedCells.empty()
+	
 func Build()->void:
 	self.done = false
 	
@@ -67,6 +69,7 @@ func Build()->void:
 
 func Reset():
 	self.current_cell = Vector2.ZERO
+	self.connectedCells.empty()
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 
@@ -198,6 +201,7 @@ func GenerateMapAsSpelunky()->void:
 	# link to previous cell is SAME on start CELL
 	self.data[self.current_cell.x][self.current_cell.y].prevCell = Vector2(self.current_cell.x,self.current_cell.y)
 	
+	self.connectedCells.append(self.current_cell)
 	
 	#cell_pos = self.GetNextRoomPosition(cell_pos)
 	#print(cell_pos)
@@ -211,6 +215,7 @@ func GenerateMapAsSpelunky()->void:
 			self.GetNextRoomPosition()
 			self.data[prev.x][prev.y].nextCell = Vector2(self.current_cell.x,self.current_cell.y)
 			self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
+			self.connectedCells.append(self.current_cell)
 			self.data[self.current_cell.x][self.current_cell.y].prevCell = prev
 	
 	pass
@@ -219,10 +224,11 @@ func GenerateMapAsPath()->void:
 	pass
 
 func DumpData()->void:
-	for x in range(0,self.width):
-		for y in range(0,self.height):
-			if self.data[x][y].cellType==eCellType.LEVEL_CELL:
-				
-				var info:String = "prev: "+String(self.data[x][y].prevCell)+" | curr: "+String(x)+","+String(y)+" next: "+String(self.data[x][y].nextCell)
-				print(info)
-		pass
+#	for x in range(0,self.width):
+#		for y in range(0,self.height):
+#			if self.data[x][y].cellType==eCellType.LEVEL_CELL:
+#
+#				var info:String = "prev: "+String(self.data[x][y].prevCell)+" | curr: "+String(x)+","+String(y)+" next: "+String(self.data[x][y].nextCell)
+#				print(info)
+#		pass
+	print(self.connectedCells)
