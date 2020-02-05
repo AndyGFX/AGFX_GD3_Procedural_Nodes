@@ -23,7 +23,7 @@ class empty_cell:
 	var down:int = eSideType.EXIT
 	var left:int = eSideType.EXIT
 	var visited:int = 0
-	var cellType:int = 0
+	var cellType:int = eCellType.UNUSED_CELL
 	var nextCell:Vector2 = Vector2(-1,-1)
 	var prevCell:Vector2 = Vector2(-1,-1)
 	var userData:Dictionary = {}
@@ -69,41 +69,9 @@ func Build()->void:
 
 func Reset():
 	self.current_cell = Vector2.ZERO
-	self.connectedCells.empty()
+	self.connectedCells = PoolVector2Array()
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
-
-func IsUp(x:int,y:int,sideType:int)->bool:
-	var res=false
-	if self.origin_bottomleft:
-		if self.data[x][self.height-y-1].up==sideType: res = true
-	else:
-		if self.data[x][y].up==sideType: res = true
-	return res
-	
-func IsRight(x:int,y:int,sideType:int):
-	var res=false
-	if self.origin_bottomleft:
-		if self.data[x][self.height-y-1].right==sideType: res = true
-	else:
-		if self.data[x][y].right==sideType: res = true
-	return res
-	
-func IsDown(x:int,y:int,sideType:int):
-	var res=false
-	if self.origin_bottomleft:
-		if self.data[x][self.height-y-1].down==sideType: res = true
-	else:
-		if self.data[x][y].down==sideType: res = true
-	return res
-
-func IsLeft(x:int,y:int,sideType:int):
-	var res=false
-	if self.origin_bottomleft:
-		if self.data[x][self.height-y-1].left==sideType: res = true
-	else:
-		if self.data[x][y].left==sideType: res = true
-	return res
 	
 func ToString(x,y):
 	var _x = x
@@ -113,10 +81,6 @@ func ToString(x,y):
 	else:
 		_y = y
 	return "{"+String(self.data[_x][_y].up)+","+String(self.data[_x][_y].right)+","+String(self.data[_x][_y].down)+","+String(self.data[_x][_y].left)+"}"
-	
-func GetCell(x:int,y:int)->empty_cell:
-	var _y = self.height - y -1
-	return self.data[x][_y]
 
 	
 func GenerateMap_Pass1()->void:
@@ -144,7 +108,7 @@ func GetStartRoomPosition()->void:
 	
 	match self.startSide:
 		eStartSide.TOP:
-			cx = randi() % self.width
+			cx = 1 + randi() % self.width-1
 			cy = 0
 			
 		eStartSide.RIGHT:
@@ -163,29 +127,47 @@ func GetStartRoomPosition()->void:
 			cy = randi() % self.height
 			
 	self.current_cell = Vector2(cx,cy)
+	
+	print("START: "+String(self.current_cell))
+
+func IsNextCellUnused(offset:Vector2)->bool:
+	var res:bool = false
+	
+	if self.data[self.current_cell.x+offset.x][self.current_cell.y+offset.y].cellType==eCellType.UNUSED_CELL:
+		res = true
+	
+	return res
 
 func GetNextRoomPosition()->void:
 	
 	var dir:int = 0
-	
+	var dir_offset:Vector2 = Vector2.ZERO
 	# ---------------------------------------------------------------------- TOP
 	dir = randi() % 3
 	
 	match dir:
+		# RIGHT
 		0:
-			if self.current_cell.x<self.width-1 && self.data[self.current_cell.x+1][self.current_cell.y].cellType==eCellType.UNUSED_CELL:
-				self.current_cell.x=self.current_cell.x+1
-			else:
-				dir = 2
+			dir_offset = Vector2(1,0)
+			if self.current_cell.x+dir_offset.x>=self.width:
+				dir_offset = Vector2(0,1)
+			elif self.IsNextCellUnused(dir_offset)==false:
+				dir_offset = Vector2(0,1)
+			
+		# LEFT
 		1:
-			if self.current_cell.x>0 && self.data[self.current_cell.x-1][self.current_cell.y].cellType==eCellType.UNUSED_CELL:
-				self.current_cell.x=self.current_cell.x-1
-			else:
-				dir = 2
+			dir_offset = Vector2(-1,0)
+			if self.current_cell.x+dir_offset.x<0:
+				dir_offset = Vector2(0,1)
+			elif self.IsNextCellUnused(dir_offset)==false:
+				dir_offset = Vector2(0,1)
+			
+		#DOWN
 		2: 
-			if self.current_cell.y<self.height:
-				self.current_cell.y=self.current_cell.y+1
-		
+			dir_offset = Vector2(0,1)
+	print ("DIR = "+String(dir_offset))
+	self.current_cell = self.current_cell + dir_offset
+	
 	
 func GenerateMapAsMaze()->void:
 	pass
@@ -195,28 +177,14 @@ func GenerateMapAsSpelunky()->void:
 	var max_rooms:int = self.width*self.height
 	
 	self.GetStartRoomPosition()
-	print(current_cell)
-	self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
-
-	# link to previous cell is SAME on start CELL
-	self.data[self.current_cell.x][self.current_cell.y].prevCell = Vector2(self.current_cell.x,self.current_cell.y)
-	
 	self.connectedCells.append(self.current_cell)
+	self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
 	
-	#cell_pos = self.GetNextRoomPosition(cell_pos)
-	#print(cell_pos)
-	
-	
-	for i in range(0,max_rooms):
-		if self.current_cell.y<self.height-1:
-			
-			#save current cell position for set link from prev cell to next
-			var prev:Vector2 = Vector2(self.current_cell.x,self.current_cell.y)
-			self.GetNextRoomPosition()
-			self.data[prev.x][prev.y].nextCell = Vector2(self.current_cell.x,self.current_cell.y)
-			self.data[self.current_cell.x][self.current_cell.y].cellType = eCellType.LEVEL_CELL
-			self.connectedCells.append(self.current_cell)
-			self.data[self.current_cell.x][self.current_cell.y].prevCell = prev
+	while self.current_cell.y<self.height-1:
+		self.GetNextRoomPosition()
+		self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
+		self.connectedCells.append(self.current_cell)
+		
 	
 	pass
 		
@@ -224,11 +192,6 @@ func GenerateMapAsPath()->void:
 	pass
 
 func DumpData()->void:
-#	for x in range(0,self.width):
-#		for y in range(0,self.height):
-#			if self.data[x][y].cellType==eCellType.LEVEL_CELL:
-#
-#				var info:String = "prev: "+String(self.data[x][y].prevCell)+" | curr: "+String(x)+","+String(y)+" next: "+String(self.data[x][y].nextCell)
-#				print(info)
-#		pass
-	print(self.connectedCells)
+
+	for i in range(0,self.connectedCells.size()):
+		print(String(i)+" : "+String(self.connectedCells[i]))

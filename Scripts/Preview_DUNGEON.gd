@@ -22,8 +22,6 @@ func _ready():
 	self.paint_dungeons = Image.new()
 	self.paint_dungeons.create(self.proceduralDungeonData.width*self.rscale,self.proceduralDungeonData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 
-	self.proceduralDungeonData.Build()
-	self.proceduralDungeonData.DumpData()
 
 func _draw():
 	
@@ -59,6 +57,8 @@ func PreviewRooms()->void:
 			if (self.proceduralDungeonData.data[x][y].down==ProceduralDungeon.eSideType.EXIT): _DrawDoor(x,y,floor(rscale/2.0),2*floor(rscale/2.0))
 	
 	$Preview_DUNGEON.set_texture(Utils.CreateTextureFromImage(self.paint_dungeons))
+	
+	
 
 func _ClearCell(x:int,y:int, color:Color)->void:
 	
@@ -97,5 +97,8 @@ func _DrawDoor(x:int,y:int,wx:int,wy:int)->void:
 
 
 func _on_Button_pressed():
+	
+	self.proceduralDungeonData.Reset()
 	PreviewRooms()
+	self.proceduralDungeonData.DumpData()
 
