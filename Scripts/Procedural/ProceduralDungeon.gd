@@ -122,13 +122,13 @@ func GetStartRoomPosition()->void:
 		eStartSide.LEFT:
 			cx = 0
 			cy = randi() % self.height
+			
 		eStartSide.RANDOM:
 			cx = randi() % self.width
 			cy = randi() % self.height
 			
 	self.current_cell = Vector2(cx,cy)
 	
-	print("START: "+String(self.current_cell))
 
 func IsNextCellUnused(offset:Vector2)->bool:
 	var res:bool = false
@@ -138,36 +138,63 @@ func IsNextCellUnused(offset:Vector2)->bool:
 	
 	return res
 
-func GetNextRoomPosition()->void:
+func GetNextRoom_SpelunkyType()->void:
 	
 	var dir:int = 0
 	var dir_offset:Vector2 = Vector2.ZERO
-	# ---------------------------------------------------------------------- TOP
-	dir = randi() % 3
-	
-	match dir:
-		# RIGHT
-		0:
-			dir_offset = Vector2(1,0)
-			if self.current_cell.x+dir_offset.x>=self.width:
+	# ---------------------------------------------------------------- TOP->DOWN
+	if  self.startSide == eStartSide.TOP:
+		dir = randi() % 5
+		
+		match dir:
+			# RIGHT
+			0,1:
+				dir_offset = Vector2(1,0)
+				if self.current_cell.x+dir_offset.x>=self.width:
+					dir_offset = Vector2(0,1)
+				elif self.IsNextCellUnused(dir_offset)==false:
+					dir_offset = Vector2(0,1)
+				
+			# LEFT
+			2,3:
+				dir_offset = Vector2(-1,0)
+				if self.current_cell.x+dir_offset.x<0:
+					dir_offset = Vector2(0,1)
+				elif self.IsNextCellUnused(dir_offset)==false:
+					dir_offset = Vector2(0,1)
+				
+			#DOWN
+			4: 
 				dir_offset = Vector2(0,1)
-			elif self.IsNextCellUnused(dir_offset)==false:
+					
+		self.current_cell = self.current_cell + dir_offset
+
+	# ------------------------------------------------------------ RIGHT -> LEFT
+	if  self.startSide == eStartSide.RIGHT:
+		dir = randi() % 5
+		
+		match dir:
+			# UP
+			0,1:
+				dir_offset = Vector2(0,-1)
+				if self.current_cell.y+dir_offset.y<0:
+					dir_offset = Vector2(-1,0)
+				elif self.IsNextCellUnused(dir_offset)==false:
+					dir_offset = Vector2(-1,0)
+				
+			# DOWN
+			2,3:
 				dir_offset = Vector2(0,1)
-			
-		# LEFT
-		1:
-			dir_offset = Vector2(-1,0)
-			if self.current_cell.x+dir_offset.x<0:
-				dir_offset = Vector2(0,1)
-			elif self.IsNextCellUnused(dir_offset)==false:
-				dir_offset = Vector2(0,1)
-			
-		#DOWN
-		2: 
-			dir_offset = Vector2(0,1)
-	print ("DIR = "+String(dir_offset))
-	self.current_cell = self.current_cell + dir_offset
-	
+				if self.current_cell.y+dir_offset.y>=self.height:
+					dir_offset = Vector2(-1,0)
+				elif self.IsNextCellUnused(dir_offset)==false:
+					dir_offset = Vector2(-1,0)
+				
+			#LEFT
+			4: 
+				dir_offset = Vector2(-1,0)
+					
+		self.current_cell = self.current_cell + dir_offset
 	
 func GenerateMapAsMaze()->void:
 	pass
@@ -180,11 +207,17 @@ func GenerateMapAsSpelunky()->void:
 	self.connectedCells.append(self.current_cell)
 	self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
 	
-	while self.current_cell.y<self.height-1:
-		self.GetNextRoomPosition()
-		self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
-		self.connectedCells.append(self.current_cell)
-		
+	if  self.startSide == eStartSide.TOP:
+		while self.current_cell.y<self.height-1:
+			self.GetNextRoom_SpelunkyType()
+			self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
+			self.connectedCells.append(self.current_cell)
+	
+	if  self.startSide == eStartSide.RIGHT:
+		while self.current_cell.x>0:
+			self.GetNextRoom_SpelunkyType()
+			self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
+			self.connectedCells.append(self.current_cell)
 	
 	pass
 		
