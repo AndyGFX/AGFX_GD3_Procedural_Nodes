@@ -42,7 +42,7 @@ func _init(w:int,h:int,rnd:bool,useed:int):
 	self.Create(empty_cell)
 	self.Clean(empty_cell)
 	
-	self.connectedCells.empty()
+	self.connectedCells = PoolVector2Array()
 	
 func Build()->void:
 	self.done = false
@@ -85,16 +85,10 @@ func ToString(x,y):
 	
 func GenerateMap_Pass1()->void:
 	
-	var mx = 0
-	var my = 0
-	
 	# create closed rooms array 
 	for x in range(0,self.width):
 		for y in range(0,self.height):
-			
-			mx = ((x*2) + 1)			
-			my = ((y*2) + 1)  # origin bottom/left
-	
+						
 			self.data[x][y].up = eSideType.WALL
 			self.data[x][y].down = eSideType.WALL
 			self.data[x][y].left = eSideType.WALL
@@ -107,6 +101,7 @@ func GetStartRoomPosition()->void:
 	var cy:int = 0
 	
 	match self.startSide:
+
 		eStartSide.TOP:
 			cx = 1 + randi() % self.width-1
 			cy = 0
@@ -138,84 +133,94 @@ func IsNextCellUnused(offset:Vector2)->bool:
 	
 	return res
 
-func GetNextRoom_SpelunkyType()->void:
+func GetNextRoom_SpelunkyType_TOP()->void:
 	
 	var dir:int = 0
 	var dir_offset:Vector2 = Vector2.ZERO
-	# ---------------------------------------------------------------- TOP->DOWN
-	if  self.startSide == eStartSide.TOP:
-		dir = randi() % 5
-		
-		match dir:
-			# RIGHT
-			0,1:
-				dir_offset = Vector2(1,0)
-				if self.current_cell.x+dir_offset.x>=self.width:
-					dir_offset = Vector2(0,1)
-				elif self.IsNextCellUnused(dir_offset)==false:
-					dir_offset = Vector2(0,1)
-				
-			# LEFT
-			2,3:
-				dir_offset = Vector2(-1,0)
-				if self.current_cell.x+dir_offset.x<0:
-					dir_offset = Vector2(0,1)
-				elif self.IsNextCellUnused(dir_offset)==false:
-					dir_offset = Vector2(0,1)
-				
-			#DOWN
-			4: 
-				dir_offset = Vector2(0,1)
-					
-		self.current_cell = self.current_cell + dir_offset
 
-	# ------------------------------------------------------------ RIGHT -> LEFT
-	if  self.startSide == eStartSide.RIGHT:
-		dir = randi() % 5
+	dir = randi() % 5
 		
-		match dir:
-			# UP
-			0,1:
-				dir_offset = Vector2(0,-1)
-				if self.current_cell.y+dir_offset.y<0:
-					dir_offset = Vector2(-1,0)
-				elif self.IsNextCellUnused(dir_offset)==false:
-					dir_offset = Vector2(-1,0)
-				
-			# DOWN
-			2,3:
+	match dir:
+		# RIGHT
+		0,1:
+			dir_offset = Vector2(1,0)
+			if self.current_cell.x+dir_offset.x>=self.width:
 				dir_offset = Vector2(0,1)
-				if self.current_cell.y+dir_offset.y>=self.height:
-					dir_offset = Vector2(-1,0)
-				elif self.IsNextCellUnused(dir_offset)==false:
-					dir_offset = Vector2(-1,0)
+			elif self.IsNextCellUnused(dir_offset)==false:
+				dir_offset = Vector2(0,1)
+
+		# LEFT
+		2,3:
+			dir_offset = Vector2(-1,0)
+			if self.current_cell.x+dir_offset.x<0:
+				dir_offset = Vector2(0,1)
+			elif self.IsNextCellUnused(dir_offset)==false:
+				dir_offset = Vector2(0,1)
+			
+		#DOWN
+		4: 
+			dir_offset = Vector2(0,1)
 				
-			#LEFT
-			4: 
-				dir_offset = Vector2(-1,0)
-					
-		self.current_cell = self.current_cell + dir_offset
+	self.current_cell = self.current_cell + dir_offset
+
+		
+func GetNextRoom_SpelunkyType_RIGHT()->void:
 	
+	var dir:int = 0
+	var dir_offset:Vector2 = Vector2.ZERO
+
+	dir = randi() % 5
+		
+	match dir:
+		# UP
+		0,1:
+			dir_offset = Vector2(0,-1)
+			if self.current_cell.y+dir_offset.y<0:
+				dir_offset = Vector2(-1,0)
+			elif self.IsNextCellUnused(dir_offset)==false:
+				dir_offset = Vector2(-1,0)
+	
+		# DOWN
+		2,3:
+			dir_offset = Vector2(0,1)
+			if self.current_cell.y+dir_offset.y>=self.height:
+				dir_offset = Vector2(-1,0)
+			elif self.IsNextCellUnused(dir_offset)==false:
+				dir_offset = Vector2(-1,0)
+			
+		#LEFT
+		4: 
+			dir_offset = Vector2(-1,0)
+				
+	self.current_cell = self.current_cell + dir_offset
+
+
+func GetNextRoom_SpelunkyType_BOTTOM()->void:
+	pass
+
+func GetNextRoom_SpelunkyType_LEFT()->void:
+	pass
+
+
 func GenerateMapAsMaze()->void:
 	pass
 	
 	
 func GenerateMapAsSpelunky()->void:
-	var max_rooms:int = self.width*self.height
-	
+		
 	self.GetStartRoomPosition()
 	self.connectedCells.append(self.current_cell)
 	self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
 	
 	if  self.startSide == eStartSide.TOP:
 		while self.current_cell.y<self.height-1:
-			self.GetNextRoom_SpelunkyType()
+			self.GetNextRoom_SpelunkyType_TOP()
 			self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
 			self.connectedCells.append(self.current_cell)
 	
 	if  self.startSide == eStartSide.RIGHT:
 		while self.current_cell.x>0:
-			self.GetNextRoom_SpelunkyType()
+			self.GetNextRoom_SpelunkyType_RIGHT()
 			self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
 			self.connectedCells.append(self.current_cell)
 	
