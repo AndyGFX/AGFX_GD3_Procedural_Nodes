@@ -24,8 +24,8 @@ class empty_cell:
 	var left:int = eSideType.EXIT
 	var visited:int = 0
 	var cellType:int = eCellType.UNUSED_CELL
-	var nextCell:Vector2 = Vector2(-1,-1)
-	var prevCell:Vector2 = Vector2(-1,-1)
+	var nextCell:Vector2 = Vector2(0,0)
+	var prevCell:Vector2 = Vector2(0,0)
 	var userData:Dictionary = {}
 	
 func _init(w:int,h:int,rnd:bool,useed:int):
