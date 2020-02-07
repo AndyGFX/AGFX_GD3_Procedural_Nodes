@@ -47,7 +47,7 @@ func _init(w:int,h:int,rnd:bool,useed:int):
 func Build()->void:
 	self.done = false
 	
-	# prepare dungeon cells
+	# prepare dungeon cells - PASS #1
 	self.GenerateMap_Pass1()
 	
 	if (self.randomSeed):
@@ -56,7 +56,7 @@ func Build()->void:
 	
 	seed(self._seed_)	
 	
-	# build dungeon cells by mode
+	# build dungeon cells by mode - PASS #2
 	match self.buildMode:
 		eBuildMode.SPELUNKY:
 			self.GenerateMapAsSpelunky()
@@ -66,6 +66,7 @@ func Build()->void:
 			self.GenerateMapAsMaze()
 	self.done = true
 
+	# add doors to rooms - PASS #3
 
 func Reset():
 	self.current_cell = Vector2.ZERO
