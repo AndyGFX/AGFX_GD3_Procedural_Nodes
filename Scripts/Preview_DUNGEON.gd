@@ -4,6 +4,8 @@ extends Node2D
 export var room_count:Vector2 = Vector2(8,8)
 export (ProceduralDungeon.eBuildMode) var buildMode = ProceduralDungeon.eBuildMode.SPELUNKY
 export (ProceduralDungeon.eStartSide) var startOnSide = ProceduralDungeon.eStartSide.TOP
+export (bool) var addExtendedCells = false
+export (float,0.0,1.0) var extendedCellsProb = 0.5
 export var userSeed:int = 2019
 export var RandomSeed:bool = false
 var proceduralDungeonData = null
@@ -17,7 +19,8 @@ func _ready():
 	self.proceduralDungeonData = ProceduralDungeon.new(self.room_count.x,self.room_count.y,self.RandomSeed,self.userSeed)	
 	self.proceduralDungeonData.buildMode = self.buildMode
 	self.proceduralDungeonData.startSide = self.startOnSide
-	
+	self.proceduralDungeonData.addExtendedCells = self.addExtendedCells
+	self.proceduralDungeonData.extendedCellsProb = self.extendedCellsProb
 	
 	self.paint_dungeons = Image.new()
 	self.paint_dungeons.create(self.proceduralDungeonData.width*self.rscale,self.proceduralDungeonData.height*self.rscale,false,Image.FORMAT_RGBA8)	

@@ -6,7 +6,8 @@
 [node name="MAIN" type="Node2D"]
 script = ExtResource( 1 )
 room_count = Vector2( 5, 8 )
-userSeed = 256
+addExtendedCells = true
+userSeed = 128
 RandomSeed = true
 
 [node name="Preview_DUNGEON" type="Sprite" parent="."]
