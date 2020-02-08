@@ -19,6 +19,7 @@ var current_cell:Vector2 = Vector2.ZERO
 var connectedCells:PoolVector2Array = PoolVector2Array()
 var addExtendedCells:bool = false
 var extendedCellsProb:float = 0.5
+var connectExtendedCells:bool = true
 
 class empty_cell:
 	var up:int = eSideType.EXIT
@@ -76,6 +77,9 @@ func Build()->void:
 
 	# add extended cells on unused cells - PASS #4
 	if self.addExtendedCells: self.AddExtenedCells()
+	
+	# connect extended cells with level cells
+	if self.connectExtendedCells: self.ConnectExtendedCells()
 
 func Reset():
 	self.current_cell = Vector2.ZERO
@@ -330,6 +334,24 @@ func GenerateRoomLinksAndDoors()->void:
 				if next_room==Vector2.RIGHT: self.data[x][y].right=true
 				if next_room==Vector2.UP: self.data[x][y].up=true
 				if next_room==Vector2.DOWN: self.data[x][y].down=true
+
+func ConnectExtendedCells()->void:
+	for x in range(0,self.width):
+		for y in range(0,self.height):
+			
+				if self.ExistRoomAt(x,y,1,0,eCellType.EXTENDED_CELL ,eCellType.LEVEL_CELL): self.data[x][y].right = true
+				if self.ExistRoomAt(x,y,-1,0,eCellType.EXTENDED_CELL ,eCellType.LEVEL_CELL): self.data[x][y].left = true
+				if self.ExistRoomAt(x,y,0,1,eCellType.EXTENDED_CELL ,eCellType.LEVEL_CELL): self.data[x][y].down = true
+				if self.ExistRoomAt(x,y,0,-1,eCellType.EXTENDED_CELL ,eCellType.LEVEL_CELL): self.data[x][y].up = true
+				
+	for x in range(0,self.width):
+		for y in range(0,self.height):
+				
+				if self.ExistRoomAt(x,y,1,0,eCellType.LEVEL_CELL ,eCellType.EXTENDED_CELL): self.data[x][y].right = true
+				if self.ExistRoomAt(x,y,-1,0,eCellType.LEVEL_CELL ,eCellType.EXTENDED_CELL): self.data[x][y].left = true
+				if self.ExistRoomAt(x,y,0,1,eCellType.LEVEL_CELL ,eCellType.EXTENDED_CELL): self.data[x][y].down = true
+				if self.ExistRoomAt(x,y,0,-1,eCellType.LEVEL_CELL ,eCellType.EXTENDED_CELL): self.data[x][y].up = true
+
 
 func AddExtenedCells()->void:
 	for x in range(0,self.width):

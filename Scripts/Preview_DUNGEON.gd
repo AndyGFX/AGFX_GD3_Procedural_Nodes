@@ -6,6 +6,7 @@ export (ProceduralDungeon.eBuildMode) var buildMode = ProceduralDungeon.eBuildMo
 export (ProceduralDungeon.eStartSide) var startOnSide = ProceduralDungeon.eStartSide.TOP
 export (bool) var addExtendedCells = false
 export (float,0.0,1.0) var extendedCellsProb = 0.5
+export (bool) var connectExtendedCells:bool = true
 export var userSeed:int = 2019
 export var RandomSeed:bool = false
 var proceduralDungeonData = null
@@ -17,11 +18,13 @@ func _ready():
 	
 	# build rooms
 	self.proceduralDungeonData = ProceduralDungeon.new(self.room_count.x,self.room_count.y,self.RandomSeed,self.userSeed)	
+	
 	self.proceduralDungeonData.buildMode = self.buildMode
 	self.proceduralDungeonData.startSide = self.startOnSide
 	self.proceduralDungeonData.addExtendedCells = self.addExtendedCells
 	self.proceduralDungeonData.extendedCellsProb = self.extendedCellsProb
-	
+	self.proceduralDungeonData.connectExtendedCells = self.connectExtendedCells
+
 	self.paint_dungeons = Image.new()
 	self.paint_dungeons.create(self.proceduralDungeonData.width*self.rscale,self.proceduralDungeonData.height*self.rscale,false,Image.FORMAT_RGBA8)	
 

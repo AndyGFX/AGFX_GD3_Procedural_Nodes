@@ -7,6 +7,7 @@
 script = ExtResource( 1 )
 room_count = Vector2( 5, 8 )
 addExtendedCells = true
+extendedCellsProb = 0.696
 userSeed = 128
 RandomSeed = true
 
