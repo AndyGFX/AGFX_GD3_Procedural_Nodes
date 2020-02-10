@@ -20,6 +20,7 @@ var connectedCells:PoolVector2Array = PoolVector2Array()
 var addExtendedCells:bool = false
 var extendedCellsProb:float = 0.5
 var connectExtendedCells:bool = true
+var startCellPos:Vector2 = Vector2.ZERO
 
 class empty_cell:
 	var up:int = eSideType.EXIT
@@ -91,7 +92,6 @@ func ToString(x,y):
 	var _x = x
 	var	_y = y
 	return "{"+String(self.data[_x][_y].up)+","+String(self.data[_x][_y].right)+","+String(self.data[_x][_y].down)+","+String(self.data[_x][_y].left)+"}"
-
 	
 func GenerateMap_Pass1()->void:
 	
@@ -133,7 +133,6 @@ func GetStartRoomPosition()->void:
 			cy = randi() % self.height
 			
 	self.current_cell = Vector2(cx,cy)
-	
 
 func IsNextCellUnused(offset:Vector2)->bool:
 	var res:bool = false
@@ -142,7 +141,6 @@ func IsNextCellUnused(offset:Vector2)->bool:
 		res = true
 	
 	return res
-
 
 func ExistRoomAt(x:int, y:int, x_off:int,y_off:int, current_type:int, conected_type:int)->bool:
 	var res:bool = false
@@ -194,7 +192,6 @@ func GetNextRoom_SpelunkyType_TOP()->void:
 			dir_offset = Vector2(0,1)
 		
 	self.current_cell = self.current_cell + dir_offset
-
 		
 func GetNextRoom_SpelunkyType_RIGHT()->void:
 	
@@ -226,7 +223,6 @@ func GetNextRoom_SpelunkyType_RIGHT()->void:
 				
 	self.current_cell = self.current_cell + dir_offset
 
-
 func GetNextRoom_SpelunkyType_BOTTOM()->void:
 
 	var dir:int = 0
@@ -257,7 +253,6 @@ func GetNextRoom_SpelunkyType_BOTTOM()->void:
 				
 	self.current_cell = self.current_cell + dir_offset
 
-
 func GetNextRoom_SpelunkyType_LEFT()->void:
 
 	var dir:int = 0
@@ -287,7 +282,6 @@ func GetNextRoom_SpelunkyType_LEFT()->void:
 			dir_offset = Vector2(1,0)
 				
 	self.current_cell = self.current_cell + dir_offset
-
 
 func GenerateMapAsMaze()->void:
 	pass
@@ -352,7 +346,6 @@ func ConnectExtendedCells()->void:
 				if self.ExistRoomAt(x,y,0,1,eCellType.LEVEL_CELL ,eCellType.EXTENDED_CELL): self.data[x][y].down = true
 				if self.ExistRoomAt(x,y,0,-1,eCellType.LEVEL_CELL ,eCellType.EXTENDED_CELL): self.data[x][y].up = true
 
-
 func AddExtenedCells()->void:
 	for x in range(0,self.width):
 		for y in range(0,self.height):
@@ -363,14 +356,12 @@ func AddExtenedCells()->void:
 				if self.ExistRoomAt(x,y,0,-1,eCellType.UNUSED_CELL ,eCellType.LEVEL_CELL): self.data[x][y].cellType = eCellType.EXTENDED_CELL
 		pass
 
-
-
 func GenerateMapAsSpelunky()->void:
 		
 	self.GetStartRoomPosition()
 	self.connectedCells.append(self.current_cell)
 	self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
-	
+	self.startCellPos = self.current_cell
 
 	# from TOP -> DOWN
 	if  self.startSide == eStartSide.TOP:
@@ -400,6 +391,9 @@ func GenerateMapAsSpelunky()->void:
 			self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL
 			self.connectedCells.append(self.current_cell)
 
+	if  self.startSide == eStartSide.RANDOM:
+		pass
+		
 	pass
 		
 func GenerateMapAsPath()->void:
