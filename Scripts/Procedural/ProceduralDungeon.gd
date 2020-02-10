@@ -392,8 +392,18 @@ func GenerateMapAsSpelunky()->void:
 			self.connectedCells.append(self.current_cell)
 
 	if  self.startSide == eStartSide.RANDOM:
-		pass
 		
+		# RND->BOTTOM
+		self.current_cell = self.startCellPos
+		while self.current_cell.y<self.height-1:
+			self.GetNextRoom_SpelunkyType_TOP()
+			self.data[self.current_cell.x][self.current_cell.y].cellType=eCellType.LEVEL_CELL			
+			self.connectedCells.append(self.current_cell)
+		
+
+
+		pass
+
 	pass
 		
 func GenerateMapAsPath()->void:
