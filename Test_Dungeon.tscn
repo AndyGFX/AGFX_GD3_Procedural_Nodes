@@ -5,9 +5,8 @@
 
 [node name="MAIN" type="Node2D"]
 script = ExtResource( 1 )
-startOnSide = 4
+addExtendedCells = true
 extendedCellsProb = 0.696
-connectExtendedCells = false
 userSeed = 128
 RandomSeed = true
 
