@@ -18,4 +18,5 @@ centered = false
 margin_right = 127.0
 margin_bottom = 20.0
 text = "Generate"
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
